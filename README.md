@@ -18,6 +18,14 @@ This converts the game data and movies into `sdcard/`, builds the game and puts 
 
 Sound needs `sd:/3ds/dspfirm.cdc`, dumped once with the DSP1 homebrew.
 
+## Preparing the data only
+
+```
+python tools/3ds/setup_sd.py "C:\Program Files (x86)\Vivendi Universal Games\The Simpsons Hit & Run"
+```
+
+Converts the game data into `sdcard/` without building. Add `--3dsx SimpsonsNTSC.3dsx` to copy a built game in.
+
 ## Credits
 
 Based on [ZenoArrows' Switch and PS Vita port](https://github.com/ZenoArrows/The-Simpsons-Hit-and-Run).
