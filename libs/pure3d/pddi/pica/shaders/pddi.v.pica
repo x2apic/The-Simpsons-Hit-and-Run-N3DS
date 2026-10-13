@@ -1,0 +1,115 @@
+.consti i_lights(3, 0, 1, 0)
+
+.fvec u_proj[4]
+.fvec u_mv[4]
+
+.fvec u_lightPos[4]
+.fvec u_lightColour[4]
+.fvec u_lightAtten[4]
+
+.fvec u_matAmbient
+.fvec u_matDiffuse
+.fvec u_matEmissive
+.fvec u_sceneAmbient
+
+.fvec u_misc
+
+.fvec u_eye
+
+.fvec u_stereoOn
+.alias zeros  u_misc.yyyy
+.alias ones   u_misc.zzzz
+.alias fixclr u_misc.wwww
+
+.alias in_pos    v0
+.alias in_normal v1
+.alias in_tex0   v2
+.alias in_colour v3
+
+.out o_pos    position
+.out o_colour color
+.out o_tex0   texcoord0
+
+.entry vmain
+.proc vmain
+	mov	r0.xyz, in_pos
+	mov	r0.w,   ones
+	dp4	r8.x, u_mv[0], r0
+	dp4	r8.y, u_mv[1], r0
+	dp4	r8.z, u_mv[2], r0
+	dp4	r8.w, u_mv[3], r0
+
+	dp4	r1.x, u_proj[0], r8
+	dp4	r1.y, u_proj[1], r8
+	dp4	r1.z, u_proj[2], r8
+	dp4	r1.w, u_proj[3], r8
+
+	mov	r11, u_eye
+	add	r12, r1.wwww, -r11.yyyy
+	mul	r12, r12, r11.xxxx
+	mov	r13, u_stereoOn
+	mul	r12, r12, r13.xxxx
+	add	r1.y, r1.y, -r12.x
+	mov	o_pos, r1
+
+	mov	o_tex0, in_tex0
+
+	mov	r10, u_misc
+	cmp	r10.yyyy, lt, lt, r10.xxxx
+	jmpc	!cmp.x, Unlit
+
+	call	DoLighting
+	jmpc	cmp.x, Done
+
+Unlit:
+	mul	r0, fixclr, in_colour
+
+Done:
+	mov	o_colour, r0
+	end
+.end
+
+.proc DoLighting
+	dp3	r9.x, u_mv[0].xyz, in_normal.xyz
+	dp3	r9.y, u_mv[1].xyz, in_normal.xyz
+	dp3	r9.z, u_mv[2].xyz, in_normal.xyz
+	dp3	r2.x, r9.xyz, r9.xyz
+	rsq	r2.x, r2.x
+	mul	r9.xyz, r9.xyz, r2.xxx
+
+	mov	r0, u_matEmissive
+	mov	r3, u_sceneAmbient
+	mov	r4, u_matAmbient
+	mad	r0.rgb, r4.rgb, r3.rgb, r0.rgb
+
+	mov	r7, u_matDiffuse
+
+	for i_lights
+	mov	r15, u_lightPos[aL]
+	mov	r14, u_lightColour[aL]
+	mov	r13, u_lightAtten[aL]
+
+	mul	r2.xyz, r8.xyz, r15.www
+	add	r1.xyz, r15.xyz, -r2.xyz
+
+	dp3	r2.x, r1.xyz, r1.xyz
+	rsq	r2.y, r2.x
+	mul	r1.xyz, r1.xyz, r2.yyy
+	rcp	r2.z, r2.y
+
+	mov	r3.x, r13.x
+	mad	r3.x, r13.yyy, r2.zzz, r3.x
+	mad	r3.x, r13.zzz, r2.xxx, r3.x
+	rcp	r5.x, r3.x
+
+	dp3	r6.x, r9.xyz, r1.xyz
+	max	r6.x, zeros, r6.x
+	mul	r6.x, r6.x, r5.x
+	mul	r4.rgb, r7.rgb, r14.rgb
+	mad	r0.rgb, r4.rgb, r6.xxx, r0.rgb
+	.end
+
+	max	r0, zeros, r0
+	min	r0, ones,  r0
+	mov	r0.w, r7.w
+.end

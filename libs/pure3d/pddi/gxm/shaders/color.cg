@@ -1,0 +1,6 @@
+void main(float2 tc        : TEXCOORD0,
+          float4 cpri      : COLOR0,
+          float4 csec      : COLOR1,
+          out float4 color : COLOR) {
+    color = cpri + csec;
+}

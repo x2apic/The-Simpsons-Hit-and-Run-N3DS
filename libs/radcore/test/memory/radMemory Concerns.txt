@@ -1,0 +1,24 @@
+radMemoryAlloc
+------------------------
+None
+
+
+IRadMemoryPool
+------------------------
+Different behavior from IRadMemoryHeap when attempting to de-allocate elements that are NULL.
+IRadMemoryPool Asserts
+
+
+IRadMemoryHeap
+------------------------
+Creation of a Heap 1048576b take (-) 1024b should be 1047552, but according to Stats it is 
+1047544 so there is a 8B discrepancy (I imagine this is for internal purposes (pointer).
+
+Largest block and Highest water mark stats don't apprear to be updated
+
+
+radMemoryExternalHeap
+-------------------------
+Highest water mark not updated
+Crashes when attempting to free null pointers
+Documentation claims that eHeap will not use heap space for its own house keeping however there is a 4B discrepancy between allocated objects and what the statistics show of the memory consumption.

@@ -1,0 +1,698 @@
+==============================================================================
+ Foundation Technologies - RadMusic - Release Notes:
+==============================================================================
+
+------------------------------------------------------------------------------
+Version:    ?
+Date:       Pending
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+Version:    04-02-2003
+Date:       February 4, 2003
+------------------------------------------------------------------------------
+
+Februrary 4, 2003 TH
+    * New IDE-based music builder now has concept of a project, plugins,
+      build targets, test targets, etc.
+    
+    * Add support for non-quarter-note based temposes such as 7/8, 6/8,
+      etc.
+      
+January 23, 2003 KV
+    * Modified debug build configuration to allow edit and continue.  
+    * Also modified tune and release to have all optimization flags turn on.
+    * Also turned on browse information in all builds
+
+------------------------------------------------------------------------------
+Version:    21-01-2003
+Date:       january 21, 2003
+------------------------------------------------------------------------------
+    January 13, 2003 *PATCH*
+
+        * Fix bug in radmusic::realloc() where 'harmless' pagefault was
+          occurring.
+		  
+    January 10, 2003 *PATCH*
+    
+        * Fix problem with file buffer iop memory management on the ps2.
+        
+        * Fix problem with layers not triggering on the correct beat.
+        
+        * Fix problem with event layer requeuing causing harmless assert.
+        
+    January 9, 2003 *PATCH*
+    
+        *  Pre-calculate region stack size--massive memory savings.
+        
+        *  option to #ifdef out malloc memory identifier tags (saved 64 bytes
+           per allocation).
+           
+        *  option to #ifdef out schema memory block identifier tags
+           (resulted int 1/6 size compsition files)
+           
+        *  fixed problem with exit regions not functioning.
+
+------------------------------------------------------------------------------
+Version:    ?
+Date:       Released
+------------------------------------------------------------------------------
+
+    January 7, 2003
+    
+        !*! Switch to radmusic2 style interface.  "C" functions. 
+            Functionally, the interface is the same.  See radmusic.hpp.
+            
+        !*! Added 'state' control.  Game can now set global states on the
+            performance such as 'level1', 'level2', 'scary', etc.  These
+            states can be used by the composer to alter the musical
+            behavior.  You can change the state programatically, or as
+            an event in the script.
+            
+        *   Added 'event matrix' system.  In the script, you can now create
+            a matrix (multi-dimensional array) of events.  You can assign
+            a state to a column, row, page, etc, thereby allowing the
+            composer to choose a different behavior based on game state
+            without programmer intervention.
+            
+        *   massively improved memory usage,  rmcompile now truly compiles
+            the script.  This script is completely memory imaged (one big
+            block as it exists on disk) at runtime.
+            
+        *   added 'thrash mode' button to gui.  This will auto-test the
+            composition.
+            
+        *   added radload support for loading compositions.  Alternately,
+            we supply a synchronous loading function using radfile.
+            
+        *   syntax change for events.  Event actions now look more like
+            function calls with named parameters.
+            
+        !*!   you must now update each performance, not the entire system.
+
+		*   added ability to specify how to resume regions when pushed and
+		    played.
+        
+    November 19, 2002
+    
+        !*! removed audioformat, streamer, and buffer sizes from the script.
+            This is now handle by the programer during radmusic:initialize( ).
+            
+        !*! radmusic::initialize( ) now takes parameters for creating a system
+            streamer and clip_player pool.  The system no longer allocates
+            one streamer per sequence.  They are allocated from the pool as
+            needed.  The streamers are shared across multiple compositions.
+                
+        !*! Added radmusic::initialize( ) and radmusic::terminate.  You MUST call
+            these functions before using the music engine.
+          
+    November 18, 2002
+    
+        !*! Unified trigger and stiched sequences there is now only one type
+            of sequence, you can have clips, streams, preloaded streams,
+            silence, and player variables all in this single sequence.
+            
+        !*! tempo is now an attribute of the clip or stream.  You now specify
+            tempo like so:       
+            
+            stream/clip ... { ... tempo: {bpm:140 time_sig:4/4 start_beat:1.0} }
+            
+            this allows you to have tempo/time signature changes within a region,
+            half partial bars, and if you specify 'start_beat:' as not beat 1
+            pickup bars not have to be padded with silence.        
+        
+        !*! trans_fade - syntax for specifying number of beats to fade out has
+            changed, new syntax:
+            
+            trans_fade { ... st: 1000 ss: 4:120 tt: 8:120 ts 30 }
+            
+            this means it will take the source 1000 ms to fade out the source
+            will start fading out at beat 4 of a 120 tempo.  the target
+            will take 8 beats of 120bpm to fade in and the target
+            will start offset 30ms.
+            
+            This change was necessary because regions no longer have a tempo,
+            rather the file has a tempo, thus we cannot 'predict' the
+            length of time needed for the fade.
+            
+        !*! region syntax is simplified, there is no longer a layers{} list
+            specification, you can now just type:
+            
+            region my_region
+            {
+                layer track1
+                {
+                }
+                
+                layer track2
+                {
+                }
+                
+                ...
+            }
+          
+    October 30, 2002
+    
+        * Better, but not perfect, fix for new file system.  Network drives
+          currently can't be used in rmbuilder.
+          
+        * Fixed a problem with loading group resources backwards (should
+          have been loading resources from root to child.  Was loading from
+          child to root...
+          
+    October 29, 2002
+    
+        * fix problem with resuming after a pop operation.
+        * fix out by one error playing triggered clips in triggered sequence
+        * fix rmbuilder and sample app to use new file system.  There are
+          still a few problems with the new win32 file system, we will work
+          them out shortly...
+          
+------------------------------------------------------------------------------
+Version:    15-10-2002
+Date:       October 15, 2002
+------------------------------------------------------------------------------
+
+    October 10, 2002 (Patch)
+    
+        * Fix problem with script parser
+        
+    October 10, 2002 (Patch)
+    
+        * Fix problem with assuming listener was always at 0,0,0 now we
+          translate random position by the listerner position.
+          
+	October 7, 2002
+
+		* Added support for complex trigger sequences and positional
+                  panning/ambience tracks.
+
+------------------------------------------------------------------------------
+Version:    1.8 - Phase 8
+Date:       October 1, 2002 (FTech 3.7)
+------------------------------------------------------------------------------
+
+
+	Sept 30, 2002 TH
+
+		* Added XBox "Viewer".  (Previously the radtextdisplay system was not
+		  implemented on the XBox );
+
+		* Added support for multiple layers within a region.  This
+		  involved some fairly significant scripting changes.  These
+		  changes also put us in position for deploying the 'trigger
+		  sequence' phase of the radmusic development ajenda.  See
+		  radmusic/sample/art/jumbo.txt for an example of the new
+		  scripting syntax and/or see Tim for details.
+	
+	September 03, 2002
+
+		* Added source fade out start time to fade transition the fade syntax
+		  has changed.  You can now specifiy the fade in terms of beats by
+		  appending a 'b' to the fade falues value.  The format is now:
+
+		  fade { source fade time, source start time, target fade time, target start time }
+
+		  example:
+
+		  fade { 1000, 2000, 4b, 0b }
+
+	August 21, 2002
+
+		* Fixed rmbuilder to display message that the .txt project file is
+		  read only and save failed.  Previously, no warning was given which
+		  could result in loss of work.
+
+------------------------------------------------------------------------------
+Version:    1.7 - Phase 7  
+Date:       August 6, 2002 (FTech 3.5)
+------------------------------------------------------------------------------
+
+	July 29, 2002 TH
+
+		* Change IRadMusicPerformance::Initialize( ).  Added 3 parameters to
+		  specify whether or not to use buffered data sources in the
+		  streaming system, what memory space to buffer the stream data in
+		  and what memory space to buffer the preloaded streaming data in.
+		  This was to allow games to disable music buffering on the IOP
+		  if using Firewire.  This interface change is backwards compatible--
+		  the parameters have default values.
+
+	July 23, 2002 TH
+
+		* Fixed problem where events were occasionally being ignored due to
+		  incorrect reporting of the current target region from the im state
+		  machine.
+
+		* Fixed problem where streamer was not being flushed when cancelling
+		  a fade transition.  This was resulting in a bit of music from
+		  another region being played out of context.
+		
+	July 17, 2002 TH
+		
+		* Improved next/pop fade transition.  Previously the stream queing
+		  latency was not being accounted for in the pre-roll time.
+		* Removed annoying "empty region asked to stitch" message.
+
+	July 16, 2002 TH
+
+		* Fix problem with region end event not calling back.  Also, the end
+		  region event is now more accurate.
+
+	July 11, 2002 TH
+
+		* Redesign GUI with scrollable button window and movable splitters.
+
+	July 5, 2002 TH
+
+		* Added "Go To Line" and "Find Text" dialog boxes to radmusic builder.
+
+	July 4, 2002 TH
+
+		* Made crossfading for exit directives and exit popping work as
+		  expected.  Previously the engine would wait until the source region
+		  ended completely until starting the "crossfade"
+
+		* Added beat display to radmusic builder--you can now visually see if
+		  your tempo settings and stich points are being interpreted by the
+		  engine properly.		  
+
+------------------------------------------------------------------------------
+Version:    1.6 - Phase 6 
+Date:       June 17, 2002 (FTech 3.4)
+------------------------------------------------------------------------------
+
+	June 17, 2002 TH
+		
+		* fix problem with volume popping when transition states.
+		* fix problem calcualting cached memory size--previously calculation
+		  could fail due to wastage caused by aligning memory. 
+
+	June 7, 2002 TH
+
+		* fixed problem with beat mapping on the PS2.  Previously a layer and
+		  or transition would not wait until the appropriate beat to trigger.
+
+	May 29, 2002 PS
+
+		* fixed -Winline warnings
+
+	May 16, 2002 TH
+
+		* Fixed a recenetly introduced reference counting problem in the
+		  region stack system.
+
+		* Add region volume - each region can now have a volume setting.
+
+		* The pop operation has been qualified so that it only pops if a
+		  particular region is playing.  now you must explicitly state
+		  the "pop condition" like so:
+
+			  pop:pause_region
+
+		  This will cause a region to be popped and played IF the currently
+		  playing region is pause_region.
+
+
+	May 8, 2002 TH
+
+		* Fixed recently introduced problem (resume feature) where stream
+		  length constraints were incorrectly being checked on preloaded
+		  streams.
+
+		* Fixed radmusic builder so you can play (but not modify) compositions
+		  without checking them out of perforce.
+
+		* Cleaned up save/document modified system.  Previously you could
+		  exit the application without being asked if you wanted to save a
+		  modified document.
+
+------------------------------------------------------------------------------
+Version:    1.5 - Phase 5
+Date:       May 8, 2002
+------------------------------------------------------------------------------
+
+	May 7, 2002 TH
+
+		* Finally fixed (for real) the recursive dialog box spew thanks to
+		  Nigel's fancy threaded rErrorMessageBox feature. (yay!).
+
+		* An event can now cause the region stack to be popped.  Just
+		  type targets { pop } in your event statement.
+
+		* Added "resume feature".  Any region that is popped will
+		  automatically resume from the point that it was pushed.
+
+		* Fixed memory leak when tearing down performance.  This was not
+		  affecting our current games because they were creating a single
+		  performance for the liftime of the game.  In the rmbuilder tool
+		  the problem was showing up as an assert().
+
+	May 2, 2002 TH		
+		
+		* Fixed the spurious "isFinished" assert (for good this time).
+
+		* Eliminated the buffered data source in the streaming path on all
+		  platforms, except form the playstion where we still buffer on the
+		  IOP.  This change will increase performance dramatically on those
+		  platforms affected.  The ps2 buffers in iop memory because sound
+		  memory is a very small amount of dedicated hardware.  This change
+		  will require the users of radmusic to have a larger sound memory
+		  region available on non ps2 platforms (less "main" memory will
+		  be used).
+
+	May 1, 2002 TH
+
+		* Fix radmusicbuilder was asserting because creating a new performance
+		  tried to use memory that was being tied up by an async operation.
+
+		* Change streaming system to use new behavior of stream player where
+		  playing 0 size files does not now go immediately into the "NoSource"
+		  state.  (You can now play zero size files).
+
+		* Fix problem where engine was getting stuck in loop where a fade
+		  target region was shorter than the fade in time.
+
+		* Add the ability for an event to pop the stack.  This provides
+		  the ability to have Pause() be an music event, and has other
+		  uses.  The "Pause" event can now push:pause_region and the
+		  "UnPause" event can pop the stack.
+
+		* Fix problem where parser wasn't reporting an error  in primitive
+		  element statement.
+
+		* Fix resource manager tree loading logic, was problem with
+	      determining which branch to load under some conditions that our
+		  games wern't using.
+
+	April 26, 2002 TH
+
+		* Fix for "isFinished" assert.  The assert was harmless (wouldn't
+		  crash) but there was a logic problem in the engine.
+
+		* Fix for "Can't target region we are already playing", this assert
+		  was harmless.
+
+		* Modified engine to use new IRadSoundHalBuffer::Initialize()
+		  interface.
+
+------------------------------------------------------------------------------
+Version:    1.4a 
+Date:       April 02, 2002 (FTech 3.2)       
+------------------------------------------------------------------------------
+
+	April 17, 2002 TH
+
+		* Add IRadMusicPerformance::Stop( ).  This method can be used to Kill
+		  the current state of the music engine and force it into a stopped
+		  state.  This function solves Mirth's problem where they would call
+		  IRadMusicPerformance::SetPaused( true ) when they went into the
+		  ingame pause menu.  If the user exited back to the front end,
+		  they would call SetPaused( false ) and the music would start
+		  playing the ingame music before doing the transition to frontend.
+		  To solve this they can now call Stop( ), SetPaused( false ),
+		  then trigger the fe event.
+
+	April 03, 2002 TH
+
+		* Fix problem in rmbuilder.exe where Save As.. would append *.txt
+		  instead of .txt to the filename.  Also cleaned up the file
+		  filter in the open and save dialogs.
+
+		* rmbuilder.exe Use AFX_IDS_APP_TITLE for all message box captions.
+
+		* Added minimum stream size warning the radmusic builder.  Now if
+		  the composer uses a stream file that is shorter than the minimum
+		  streaming file size he will get a warning message box.  Also,
+		  the runtime wile print a warning to the debug window.
+
+		* Fix problem overwriting stack character array for super long error
+		  message in music tool.  (Switch to radstring).
+
+	April 02, 2002 TH
+	
+		* Upgrade to April XDK.  Previous versions of the XDK are no longer
+		  supported due to required changes in the .dsp files.
+
+		* Fixed a build problem on gamecube where src/parser was specified as
+		  a search path, but the directory didn't exist.
+
+	March 25, 2002 -TH
+
+		* Fixed problem in resource management system where caching to IOP
+		  memory was clobbering IOP memory.
+		* Added -checkdate and -silent mode to rmcompile.exe and .dll
+		  function.
+		* Added ability to specify platform specific code sections.  Now you
+		  can specify different buffersizes for different platforms.
+		  
+		    Usage: 
+
+				buildtarget { [ps2|win32|gamecube|xbox] } [ target specific
+				    statements ]
+
+			Script Example:
+
+				buildtarget { ps2 } [ buffersizes file 4000 stream 700 ] 
+
+------------------------------------------------------------------------------
+Version:    1.4 - Phase 4
+Date:       March 13, 2002 (FTech 3.1)
+------------------------------------------------------------------------------
+
+	*PATCH* March 22, 2002 -TH
+		
+		* Change sound caching to EE instead of IOP, this fixed a strange
+		  lockup in the sony libraries for Penthouse...still looking
+		  into this one.
+
+	*PATCH* March 21, 2002 -TH
+	
+		* You can now specify which beats (or no beats) to start a fade
+		  transition.  The script syntax is backwards compatible.
+
+		  Script Example:
+
+				transition from level1 to level2 using nothing type fade {
+				200, 200, 0 } beats { 1.0, 3.0 )
+		  
+		  This example will play level1, and on beat 1.0 or 3.0 will
+		  begin a quick 200ms cross fade between regions.
+
+		* Inline all trivial functions.
+    	* Clean up beat-mapping logic, added comments. 
+
+	*PATCH* March 20, 2002 -TH
+
+		* Add ability to specify fractional beat specifications for
+		  layers.  Previously we were limited to half beats, no you can
+		  use any  value, such as: 1.333, 2.7, 1.5, 4.666, etc.
+
+	*PATCH* - March 20, 2002, TH
+
+		* Fix problem in radmusic where layers wern't fading out with regions.
+		* Fix minor problem where "cannot trigger layer" debug output was
+		  flooding the screen if radMusicDebugChannel was turned on.
+
+	*PATCH* - March 19, 2002, TH
+
+		* Music streamers are now created as highest priority.
+		* Fix problem with cr/lf not being written properly in compiled music
+		  script.
+		* Fix problem where using the same filename for a prim and a clip
+		  cased errors at runtime.
+		* Fix problem were using .wav files starting with numbers were
+		  generating errors.
+		* Fix divide by zero problem when 0 specified for source or target
+		  fade times.
+
+	*PATCH* - March 15, 2002 -TH 
+
+		* Fixed tool from spewing recursive dialog boxes if an assert()
+		  happens in the code.
+		* Fixed problem where state machine would switch to "stopped" before
+		  the stream player had finished playing.  This was causing certain
+		  transitions not to execute.
+		* Separated streamState from stitchState in region, to clarify
+		  the dynamics of the region's interaction with the stream-graph
+		  system.  This fixed a spurrious assert.
+		* Fixed allocators not being set in base class properly in radmusicobject.
+		* Fix memory leak in radmusicobject.
+		* Fix radMusicUpdateableObject so that it handles objects removing
+		  or adding themselves to the update list during Update().
+
+
+	March 13, 2002 - TH
+	--------------
+
+		* Removed all instances of RADMEMORY_ALLOC_DEFAULT from the music
+		  engine.  The game has total control over memory allocations through
+		  the radmusic interface.
+		* Fixed assert in caused compiling a new script and not clearing the
+		  current performance in all cases.
+		* Added Sound/Stream Cache memory display in radmusic builder (yay!)
+		* Added recent file list to radmusic builder
+		* Create performance button/menu item now automatically saves
+		  composition.
+
+		!!Script Changes!!
+		----------------
+
+		* Added group { } directive
+
+		  Everything ( prims,clips,layers,regions,controls ) MUST be contained
+		  within a group { } specifiication.  The group { } specification
+		  can/should be nested.  These group's specify the resource loading
+		  groups in the new resource tree.  The memory display in the tool
+		  tells you the leaf node in the resource tree that is using the most
+		  memory in each memory space (cache and sound).
+
+		* Remove clip's: type [dynamic|preloaded] attribute.
+
+	      You no longer specify the type of the clip.  All clips are dynamically
+		  loaded via the resource-tree mechanism. (see above comment).
+
+		* Remove stream's type: [dynamic] attribute.
+
+		  Only preloaded and streamed specifications are now supported.
+		  preloaded means that the stream is loaded via the region-tree mechanism
+		  (exactly like clips), and streamed means just that, streamed.
+		
+
+	March 12, 2002 - TH
+	---------------
+
+		* Added line-number display to rmbuilder.
+		* Composition parser errors now include the line number.
+
+	February 27, 2002 -RS
+	-----------------
+
+        * Changed win32 lib and samples to build with multithreaded c runtime library
+
+	February 26, 2002 -TH
+	-----------------
+
+		* Somewhat massive rewrite of radmusic, new features include:
+
+			- NO memory allocations during steady state.
+			- Resource-tree loading system - vastly improved CD usage.
+			- radmusic never reads the .rsd file header - now stored as
+			  meta-data.
+			- rmcompile.exe tool added for compiling scripts and converting
+			  .wav files used in the script.
+			- composition meta-information now available for future use, this
+			  will allow us to provide feedback to composers about resource
+			  consumption.
+			- simplification of composition data structures.
+			- smaller memory image.
+
+	February 14, 2002 -TH
+	-----------------
+	
+		* Added callback mechanism and scripted callback specification for
+		  begin/end of layers and regions.  The region callbacks need some
+		  work--they currently are being sent early because of the streaming
+		  buffer's latency.  This will be fixed, but the current implementation
+		  should be enough to get callbacks happing in our games.  Happy
+		  valentines day!
+		                
+	February 13, 2002 -TH
+	----------------
+
+		* Added region exit paths
+		* Added region stack and push/switch operations.
+
+            
+    January 9, 2002 -TH
+    ---------------
+    
+        * Fixed a problem where a region's layer would be abruptly cut
+          when stitching to a new region.
+
+    January 21, 2002 -TH
+    ----------------
+
+        * !Interface Change! - Play( ), Stop( ), is now SetPaused( ), GetPaused( ).
+          Play( ) and Stop( ) didn't do anything before because the symantics of
+          the interface was wrong.  SetPaused( true ) stops the music player dead
+          and SetPaused( false ) restarts it from exactly where it left off.              
+
+
+    January 24, 2002 -TH
+    ----------------
+
+	* Aligned FTech preprocessor directives with Pure3D.  It is important to use the new directives in the 
+	  makefile and Project Settings.  The changes are as follows:-
+
+	   - PS2EE -> RAD_PS2
+	   - GCN -> RAD_GAMECUBE
+	   - WIN32 -> RAD_WIN32
+	   - _XBOX -> RAD_XBOX
+	   - RELEASE -> RAD_RELEASE
+	   - TUNE -> RAD_TUNE
+	   - DEBUG -> RAD_DEBUG
+
+
+    January 25, 2002 -TH
+    ----------------
+
+		* Sample programs compile and run with ps2 metrowerks
+		* !Interface Change! - IRadMusicPerformance::SetComposition( )
+		  changed to Initialize( ) this is more consistent with FTech standards
+		* Removed unimplemented features from radmusic.hpp to avoid confusion
+		* Improved radmusic.hpp comments.
+
+------------------------------------------------------------------------------
+Version:    1.3 - Phases 2 & 3
+Date:       January 7, 2002
+------------------------------------------------------------------------------
+
+    December 14, 2001 - Phase 2
+        
+        * Added tempo based ornamentation + memory streaming
+        
+    January 3, 2002
+
+        * Added Ps2 Metrowerks Code Warrior library build.
+
+    January 4, 2002
+        
+        * Added loading/unloading of dynamic clips.
+
+    January 7, 2002 (Finished phase 3 - Dynamic loading)
+
+        * Added loading/unloading dynamic streams.
+        * Added event priorities.
+        * Added 1 level event queue.  If a region switch request doesn't
+          excecute because the state machine is processing a transition,
+          that event will be queued and re-issued when the state machine
+          is steady (finished transitioning).
+
+------------------------------------------------------------------------------
+Version:    1.0 - Phase 1
+Date:       Nov 26, 2001
+------------------------------------------------------------------------------
+    
+    Overview:
+    ---------
+    
+    The radmusic libraries manage playback of an interactive music
+    composition. The interactive music composition provides the rules and
+    data required to respond to game driven events and create the interactive
+    music experience.  This engine allows games to achieve seemingly
+    pre-rendered movie-like cinematic ambience and music previously unavailable
+    in our games.
+    
+    The strength of the radmusic engine is its knowledge of
+    timing and time signatures and musical rules--it can thus create impressive
+    transitions, layering, and ornamentation of sounds in a very musical way.
+
+    radmusic Builder is a gui-based composition editor.  The audio composers
+    use this tool to create runtime binaries, which are loaded by the radmusic
+    runtime.  This tool allows testing of radmusic compositions outside of
+    the game environment.
+    
+    Further, the runtime engine allows games to tightly control disk activity.
+    Audio content can be marked as streamed (loaded when needed), preloaded
+    (global), or dynamic (pre-loaded based on musical game "regions").

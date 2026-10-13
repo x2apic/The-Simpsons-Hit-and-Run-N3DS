@@ -1,0 +1,15 @@
+==============================================================================
+ Advanced Technologies Group - RadContent - Release Notes:
+==============================================================================
+------------------------------------------------------------------------------
+Version:    29-10-2002
+Date:       October 29, 2002
+------------------------------------------------------------------------------
+
+Oct 28, 2002	PGM
+
+    * Added a new component called the radContentManager. This DLL will manage
+      files making up a project. It has support for perforce and will add and
+      edit files appropriately. This subsystem may form the basis for asset 
+      management.	
+

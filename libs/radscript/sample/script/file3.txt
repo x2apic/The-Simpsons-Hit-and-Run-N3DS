@@ -1,0 +1,32 @@
+create scrTstClass3 named TestPlatform
+{
+    CallDefault ( )
+}
+create scrTstClass2 named TestPCOption option PC
+{
+    SetShortString ( "Testing create an object in PC but calling in PC only." ) option PC
+    SetShortString ( "Testing create an object in PC but calling in PS2 only." ) option PS2
+    SetShortString ( "Testing create an object in PC but calling in XBOX only." ) option XBOX
+    SetShortString ( "Testing create an object in PC but calling in GCN only." ) option GCN
+}
+create scrTstClass2 named TestPS2Option option PS2
+{
+    SetShortString ( "Testing create an object in PS2 but calling in PC only." ) option PC
+    SetShortString ( "Testing create an object in PS2 but calling in PS2 only." ) option PS2
+    SetShortString ( "Testing create an object in PS2 but calling in XBOX only." ) option XBOX
+    SetShortString ( "Testing create an object in PS2 but calling in GCN only." ) option GCN
+}
+create scrTstClass2 named TestGCNOption option GCN
+{
+    SetShortString ( "Testing create an object in GCN but calling in PC only." ) option PC
+    SetShortString ( "Testing create an object in GCN but calling in PS2 only." ) option PS2
+    SetShortString ( "Testing create an object in GCN but calling in XBOX only." ) option XBOX
+    SetShortString ( "Testing create an object in GCN but calling in GCN only." ) option GCN
+}
+create scrTstClass2 named TestXBOXOption option XBOX
+{
+    SetShortString ( "Testing create an object in XBOX but calling in PC only." ) option PC
+    SetShortString ( "Testing create an object in XBOX but calling in PS2 only." ) option PS2
+    SetShortString ( "Testing create an object in XBOX but calling in XBOX only." ) option XBOX
+    SetShortString ( "Testing create an object in XBOX but calling in GCN only." ) option GCN
+}

@@ -1,0 +1,175 @@
+==============================================================================
+ Foundation Technologies - RadScript - Release Notes:
+==============================================================================
+------------------------------------------------------------------------------
+Version:	
+Date:           Pending
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+Version:    12-11-2002
+Date:       November 12, 2002
+------------------------------------------------------------------------------
+
+November 11, 2002 PS
+    * Fixed non-optimal reads in typeinfo loader
+
+-----------------------------------------------------------------------------
+Version:    29-10-2002
+Date:       October 29, 2002
+------------------------------------------------------------------------------
+
+October 24, 2002 PS
+    * changed radScript to use radKey32, since radKey changed to 64 bit.
+
+-----------------------------------------------------------------------------
+Version:	3.7 
+Date:           August 6, 2002 (FTech 3.5)
+------------------------------------------------------------------------------
+
+July 05, 2002 JT
+    * radTuner: Support multiple drag and drop, multiple copy and paste,
+      multiple delete, and shortcut key associated with it.
+    * radTuner: In parameter slider bar control, additional right context menu
+      entry "Enter Value manually" is added for user to change the value of a
+      parameter preciously.
+    * radTuner: Added Recent file list.
+
+-----------------------------------------------------------------------------
+Version:	3.6
+Date:       June 17, 2002 (FTech 3.4)
+------------------------------------------------------------------------------
+
+(No changes)
+
+------------------------------------------------------------------------------
+Version:	3.5 
+Date:       May 8, 2002 (FTech 3.3)
+------------------------------------------------------------------------------
+
+(No changes)
+
+------------------------------------------------------------------------------
+Version:	3.4
+Date:       April 02, 2002 (FTech 3.2)
+------------------------------------------------------------------------------
+
+April 02, 2002 TH
+	
+	* Upgrade to April XDK.  Previous versions of the XDK are no longer
+	  supported due to required changes in the .dsp files.
+
+------------------------------------------------------------------------------
+Version:	3.3 
+Date:       March 13, 2002 - (FTech 3.1)
+------------------------------------------------------------------------------
+
+March 7, 2002 JT
+    * Bug fix in RIDL, where initalization value enum { myEnum = 1 }; will
+      cause parser to fail.
+
+February 27, 2002 RWS
+
+    * Changed win32 lib and samples to build with multithreaded c runtime library
+
+February 7, 2002 RWS
+
+    * Where required, added check for RAD_XXXXXX preprocessor definitions 
+      in library interface files
+
+
+------------------------------------------------------------------------------
+Version:	3.2
+Date:		Typeinfo file format change
+------------------------------------------------------------------------------
+	typeinfo - string used by typeinfo no longer has size limit.
+
+September 7, 2001
+
+	
+	namespace:
+		INTERFACE CHANGE:
+			* The namespace interface no longer supports the GetAt
+			  operation.  It now has a GetFirst and GetNext
+		* The namespace now uses a binary tree for optimized speed.
+		  This will not guarentee the order of namespace objects,
+		  however. (ch 2949)
+
+October 11, 2001
+
+	typeinfo:
+		* The type info system may only be initialized once.  If something
+		  tries to initalized it more than once, it will assert.  (ch 3094)
+
+January 3, 2002
+
+	* Added Ps2 Metrowerks Code Warrior build.
+
+January 24, 2002
+
+	* Aligned FTech preprocessor directives with Pure3D.  It is important to use the new directives in the 
+	  makefile and Project Settings.  The changes are as follows:-
+
+	   - PS2EE -> RAD_PS2
+	   - GCN -> RAD_GAMECUBE
+	   - WIN32 -> RAD_WIN32
+	   - _XBOX -> RAD_XBOX
+	   - RELEASE -> RAD_RELEASE
+	   - TUNE -> RAD_TUNE
+	   - DEBUG -> RAD_DEBUG
+
+January 25, 2002
+
+        * PS2 sample programs compile and run with metrowerks
+
+------------------------------------------------------------------------------
+Version:	3.1
+Date:		 
+------------------------------------------------------------------------------
+
+	radscript - use aligned memory when reading in the script and typelib. This improves
+	            load time on the PS2
+
+------------------------------------------------------------------------------
+Version:	3.0
+Date:		July 24, 2001
+------------------------------------------------------------------------------
+
+	radScript:
+		* memory usage greatly optimized,
+		  
+		  To unload data string
+		  use IRadTypeInfoSystem::EmptyStrTbl( ) (that will save 40k-60k)
+		  
+		  To specify loading string
+		  use IRadTypeInfoSystem::SetLoadString( true/false );
+		* major update on parser, keyword "option" added
+		* a simple and complete sample test program is under "sample"
+		* bug fixes in the boolean parameter for GCN platform
+
+	RIDL:
+		* using RIDL.EXE to compile the interface defintion and replaced
+          the old hpp2typ.exe
+
+------------------------------------------------------------------------------
+Version:	2.1
+Date:		June 8, 2001
+------------------------------------------------------------------------------
+
+	radScript:
+
+		* Fixed bug that crashed when running empty scripts
+
+	radFactory:
+	
+		* Now supports two types of creation functions, out-param,
+		  and function return value.  (It is recommended that future
+                  development use only out-param style creation functions).
+
+------------------------------------------------------------------------------
+Version:	1.0
+Date:		???
+------------------------------------------------------------------------------
+
+	Initial Release
+

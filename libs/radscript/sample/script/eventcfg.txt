@@ -1,0 +1,8 @@
+create scrTstClassEventHandler named EventHandler1
+{
+    SetEventScript ( "eventsnk.txt" )
+}
+create scrTstClassEvent named Event1
+{
+    SetEventHandler ( ref:EventHandler1 )
+}

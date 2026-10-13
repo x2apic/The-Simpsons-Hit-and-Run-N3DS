@@ -1,0 +1,32 @@
+
+create scrTstClass1 named PassThisObject
+{
+}
+with scrTstClass1 named TestObject1
+{
+    SetBool ( false )
+    SetBool ( true )
+    SetInt ( 0 )
+    SetInt ( 1000 )
+    SetInt ( 268435455 )
+    SetInt ( -268435456 )
+    SetUInt ( 0 )
+    SetUInt ( 2000 )
+    SetUInt ( 4294967295 )
+    SetLong ( 0 )
+    SetLong ( 3000 )
+    SetLong ( 268435455 )
+    SetLong ( -268435456 )
+    SetShortString ( "testing short string" )
+    SetLongString ( "testing a very very very long string, blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah [end of string]" )
+    SetFloat ( 0.000000 )
+    SetFloat ( -1.000000 )
+    SetFloat ( 1.000000 )
+    SetFloat ( 3.141593 )
+    SetFloat ( -3.141593 )
+    CallNoParam (  )
+    CallMultiParam1 ( true 1 )
+    CallMultiParam2 ( false 100 100.000000 )
+    SetRef ( ref:PassThisObject )
+    SetClassInstance ( ref:PassThisObject )
+}

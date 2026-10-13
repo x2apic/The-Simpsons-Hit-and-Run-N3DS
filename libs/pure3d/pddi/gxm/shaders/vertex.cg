@@ -1,0 +1,53 @@
+typedef struct {
+    float4 position;
+    float4 colour;
+    float4 attenuation;
+} LightParams;
+
+float3 direction(float4 p1, float4 p2) { return normalize(p2.xyz * sign(p1.w) - p1.xyz * sign(p2.w)); }
+float power(float x, float y) { return y != 0.0 ? pow(x,y) : 1.0; }
+float product(float3 x, float3 y) { return max(dot(x,y), 0.0); }
+
+void main(float3 position      : POSITION,
+          float3 normal        : NORMAL,
+          float2 texcoord      : TEXCOORD0,
+          float4 color         : COLOR,
+          out float4 oPosition : POSITION,
+          out float2 tc        : TEXCOORD0,
+          out float4 cpri      : COLOR0,
+          out float4 csec      : COLOR1,
+          uniform float4x4 projection,
+          uniform float4x4 modelview,
+          uniform float4x4 normalmatrix,
+          uniform float4 acs,
+          uniform float4 acm,
+          uniform float4 dcm,
+          uniform float4 scm,
+          uniform float4 ecm,
+          uniform LightParams lights[4]) {
+    float4 V = mul(float4(position, 1.0), modelview);
+    float3 n = normalize(mul(normal, float3x3(normalmatrix)));
+
+    float3 diff = ecm.rgb + acm.rgb * acs.rgb;
+    float3 spec = float3(0.0);
+    for (int i = 0; i < 4; i++) {
+        if (lights[i].position.w < 0.0f) continue;
+
+        float3 VP = direction(V, lights[i].position);
+        float f = product(n,VP) != 0.0 ? 1.0 : 0.0;
+        float3 h = normalize(VP + float3(0.0, 0.0, 1.0));
+
+        float3 k = lights[i].attenuation.rgb;
+        float d = distance(V.xyz, lights[i].position.xyz);
+        float att = lights[i].position.w != 0.0 ? 1.0 / (k[0] + k[1] * d + k[2] * d * d) : 1.0;
+
+        float srm = lights[i].attenuation.a;
+        diff += att * product(n,VP) * dcm.rgb * lights[i].colour.rgb;
+        spec += att * f * power(product(n,h),srm) * scm.rgb * lights[i].colour.rgb;
+    }
+
+    tc = texcoord;
+    cpri = color * float4(diff, dcm.a);
+    csec = float4(spec, 0.0);
+    oPosition = mul(V, projection);
+}

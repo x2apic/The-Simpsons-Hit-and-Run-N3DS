@@ -1,0 +1,11 @@
+.vs/
+out/
+build/
+switch/
+romfs/
+module/
+art/
+CMakeSettings.json
+ext_data/
+sdcard/
+__pycache__/

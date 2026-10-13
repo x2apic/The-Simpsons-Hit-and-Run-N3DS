@@ -1,0 +1,32 @@
+ERRORS: how to translate radFile errors to the platform for TRCs.
+-------
+
+radFileError (all functions except cancel, drive open, file/drive close and GetMediaInfo) :
+
+    Success,                    // No Error
+    FileNotFound,               // File not found
+    ShellOpen,                  // Cover open
+    WrongMedia,                 // Wrong game disc (must replace disc ir close all files)
+    NoMedia,                    // No disc
+    MediaNotFormatted,          // NOT SUPPORTED
+    MediaCorrupt,               // NOT SUPPORTED
+    NoFreeSpace,                // NOT SUPPORTED
+    HardwareFailure,            // Fatal error
+    MediaEncodingErr,           // NOT SUPPORTED
+    MediaWrongType,             // Unknown disc type
+    MediaInvalid,               // NOT SUPPORTED
+    DataCorrupt                 // NOT SUPPORTED
+
+MediaInfo (Initialize and GetMediaInfo):
+
+    MediaPresent,               // Disc is present
+    MediaNotPresent,            // No disc or
+                                // Cover open or
+                                // Fatal error
+    MediaNotFormatted,          // NOT SUPPORTED
+    MediaInvalid,               // Illegal media
+    MediaWrongType,             // Undistiguishable disc
+    MediaEncodingErr,           // NOT SUPPORTED
+    MediaDamaged                // NOT SUPPORTED
+
+Volume Name: volume name of the disk

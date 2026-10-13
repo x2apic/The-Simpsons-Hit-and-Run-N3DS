@@ -1,0 +1,1638 @@
+==============================================================================
+RadCore - Release Notes:
+==============================================================================
+------------------------------------------------------------------------------
+Version:    
+Date:       Pending
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+Version:    10-12-2002
+Date:       December 12, 2002
+
+Software:   XBox:   November XDK (1.00.5120.1) 
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            Win32:  DirectX 8.0
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            PS2:    Sony Libs V2.54
+                    SN 2.2
+
+            PS2 MW: Sony Libs V2.54
+                    CodeWarrior R2.7.1
+
+            GCN:    Dolphin SDK 5-9-2002 with VirtualMemory 1-11-2002 
+                    CodeWarrior R1.3.2	
+------------------------------------------------------------------------------
+
+Dec 10, 2002 PS
+    * PS2 and Xbox memory cards no longer try to save if there's no room,
+      they return immediately.
+
+Dec 10, 2002 PS
+    * Asserts fixed on memory cards (all platforms).
+
+Dec 10, 2002 PS
+    * radFileService() is now re-entrant, i.e. you can call filesystem functions
+      form within a callback.
+
+Dec 9, 2002 PS
+    * Polling the mouse using radcontroller will give absolute values
+      from the origin (i.e. from initialization of the input point)
+
+    * Filesystem now has WMA support through the W: drive on Xbox.
+
+Dec 09, 2002 JT
+    * MemMonitor: implmentation of Host tool enhancement sugguested from various
+                  user.
+------------------------------------------------------------------------------
+Version:    26-11-2002
+Date:       November 26, 2002
+
+Software:   XBox:   November XDK (1.00.5120.1) 
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            Win32:  DirectX 8.0
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            PS2:    Sony Libs V2.54
+                    SN 2.2
+
+            PS2 MW: Sony Libs V2.54
+                    CodeWarrior R2.7.1
+
+            GCN:    Dolphin SDK 5-9-2002 with VirtualMemory 1-11-2002 
+                    CodeWarrior R1.3.2	
+------------------------------------------------------------------------------
+
+Nov 21, 2002 PS
+    * Small fix to GCN dvd drive to remove an assert if the same file gets
+      opened and closed a lot.
+
+------------------------------------------------------------------------------
+Version:    12-11-2002
+Date:       November 12, 2002
+
+Software:   XBox:   October XDK (1.00.5028.1) 
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            Win32:  DirectX 8.0
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            PS2:    Sony Libs V2.54
+                    SN 2.2
+
+            PS2 MW: Sony Libs V2.54
+                    CodeWarrior R2.7.1
+
+            GCN:    Dolphin SDK 5-9-2002 with VirtualMemory 1-11-2002 
+                    CodeWarrior R1.3.2	
+------------------------------------------------------------------------------
+Nov 12, 2002 PS
+    * To the best of my knowledge, here is the stuff that Eric added:
+
+    * The GAMECUBE build now requires the inclusion of the virtual memory libraries. 
+      Unzip "T:\DevSys\gamecube\GDEV and Dolphin SDK\VirtualMemory110102.zip" into
+      your Dolphin1.0 directory. 
+
+    * THERE WAS AN INTERFACE CHANGE!!!!! For GCN only, radMemoryInitialize( ) now 
+      takes 2 parameters!!! The first is the amount of main memory to use for VMM, 
+      the second is the amount of ARAM memory to use. Then allocator 
+      RADMEMORY_ALLOC_VMM will allocate from virtual memory, and swap between main 
+      and ARAM as needed. If you don't want to use virtual memory, just use
+      radMemoryInitialize( 0,0 ).
+
+Nov 11, 2002 PS
+    * removed outdated GCN code from radPlatform.
+
+Nov 11, 2002 PS
+    * Fixed non-optimal reads found on Simpsons. There may be more that I 
+      don't know about, but the ones which showed up on Simpsons are fixed.
+
+Nov 11, 2002 PS
+    * Added buffered reading. If its on, then non-optimal reads are buffered
+      without complaint. If off, it asserts if the read is non-optimal. By 
+      default, it is auto, which means it buffers if needed and prints a
+      warning.
+
+Nov 7, 2002 PS
+    * Added in cement file priorities. Cement files can be searched either
+      before or after the drive.
+
+Nov 5, 2002 PS
+    * Added auto-mounting to the file system. Unless it is turned off using 
+      radFileSetAutoMount, any drive will be mounted on its first use and 
+      auto-unmounted during radFileTerminate. Games should still explicitly 
+      mount each drive to dictate when and which allocator, but windows tools 
+      can just let the drives mount themselves as needed. To be safe, games
+      should explicitly turn auto-mounting off before mounting any drives, to
+      guarantee that they aren't accidentally using resources.
+
+Nov 1, 2002 JT
+    * radDebugWatch and TheWatcher: added read-only attribute to watch
+      variables. User can set if the data is read only, and cannot be
+      overwritten by user accidentally.
+
+October 30, 2002 TH
+
+    * Added AddHead() method to object list, previously you could only add to
+      the end of the list.
+    
+------------------------------------------------------------------------------
+Version:    29-10-2002
+Date:       October 29, 2002
+
+Software:   XBox:   October XDK (1.00.5028.1) 
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            Win32:  DirectX 8.0
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            PS2:    Sony Libs V2.54
+                    SN 2.2
+
+            PS2 MW: Sony Libs V2.54
+                    CodeWarrior R2.7.1
+
+            GCN:    Dolphin SDK 5-9-2002 
+                    CodeWarrior R1.3.2	
+------------------------------------------------------------------------------
+
+Oct 28, 2002 PS
+   * radTime: added support for getting the current date and local time.
+
+Oct 25, 2002 PS
+    * Added the new radFile!! It completely replaces the old radFile. Major changes:
+
+      - Shadow drives are gone. Use radSetDefaultDrive( char* driveName ) to set which 
+        drive is used if no drive name is given.
+
+      - All drives must now be mounted before they can be used. Just call radDriveMount( ) 
+        or radDriveMount( char* drivename ), the first one uses the default drive, before 
+        trying to open files. Typically, just do it right after radFileInitialize. If you 
+        want to shut down properly, call radDriveUnmount( ) or radDriveUnmount( char* driveName ) 
+        on all mounted drives before radFileTerminate.
+
+      - radThread must be initialized before radFile.
+
+      - Some of the names of the drives have changed, check radcore/inc/radfile.hpp.
+
+      - There are synchronous version of most things as well as asynchronous one. All functions end
+        with Sync or Async (i.e. ReadSync( ) and ReadAsync( ) ). DriveOpen, FileOpen, etc ... still
+        exist as asynchronous functions, but will eventually disappear in favour of FileOpenAsync( ), etc.
+
+      - Memory cards are now at TRC level. Use OpenSaveGame[Sync/Async] to open a save game on memory
+        cards or XBox hdd. All icon info must be passed in during this call, then icons, names, and
+        data verification are done automatically by using the usual radFile interface. A new function
+        Commit[Sync/Async] should be used to guarantee that all data has been written to the card and it
+        is safe to display a `Save Complete' message to the user.
+
+      - Cement files no longer have priorities. If a cement file is registered, it is searched before the
+        underlying drive. Cement files are no longer searched after a file wasn't found on the drive.
+
+      - Error handling is more consitent. Check out doc/technotes/radfileerrors.sxw for details.
+
+Oct 24, 2002 PS
+    * radKey: added radKey32 since P3D changed radKey to 64 bit.
+
+Oct 13, 2002 PGM
+    * radController : GameCube controller now using PADClampCircle( ) to
+      calculate the clamp area which entire uniformally distributed stick
+      direction value. It is only available on Dolphin SDK Sept 2002
+
+------------------------------------------------------------------------------
+Version:    15-10-2002
+Date:       October 15, 2002
+
+Software:   XBox:   October XDK (1.00.5028.1) 
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            Win32:  DirectX 8.0
+                    VC++ 6.0 and VC++ 7.0.9466
+
+            PS2:    Sony Libs V2.54
+                    SN 2.2
+
+            PS2 MW: Sony Libs V2.54
+                    CodeWarrior R2.7.1
+
+            GCN:    Dolphin SDK 12-12-2001 Patch 4 and Dolphin SDK 5-9-2002 
+                    CodeWarrior R1.3.2	
+-----------------------------------------------------------------------------
+
+Oct 13, 2002 PGM
+    * Added VC7.0 Projects (solutions) for libraries, tools and samples.
+
+Oct 11, 2002 PS
+    * Added fixes and features from radFile development branch:
+      - radThread fix on PS2
+      - win32 memory alignment is 4
+      - moved XBox controller init to platform
+      - added basic SJIS string support
+      - added running hash support
+      - added CRC checking functions
+
+Oct 2, 2002 PGM
+    * Created new plug-in for Maya. Allows commands to be issued from Maya and
+      remotely executed in the game over the network. This system interacts
+      with the radRemoteCommand system. 
+
+------------------------------------------------------------------------------
+Version:    3.7
+Date:       October 1, 2002
+
+Software:   XBox:   September XDK (1.00.4928.1)
+            Win32:  VC++ 6.0
+            PS2:    V2.54
+            PS2 MW: CodeWarrior R2.7.1
+            GCN:    CodeWarrior R1.3.2	Dolphin SDK 12-12-2001 Patch 4
+------------------------------------------------------------------------------
+
+Sept 27, 2002 RWS
+    * Ps2 Controller - controller connection state handles disconnect/connect
+      faster than a single service period   
+          
+Sept 20, 2002 JT
+	* DbgCom: Update the targeteditor to include TcpMaxConnectRetransmissions
+	  registry setting. It will decrease the connection time between host and
+	  target from max 21 sec to max 3 sec.
+
+------------------------------------------------------------------------------
+Version:    3.6
+Date:       September 17, 2002
+
+Software:   XBox:   September XDK (1.00.4928.1)
+            Win32:  VC++ 6.0
+            PS2:    V2.54
+            PS2 MW: CodeWarrior R2.7.1
+            GCN:    CodeWarrior R1.3.2	
+------------------------------------------------------------------------------
+
+Sept 17, 2002 PGM
+	* Updated Firewire driver so that it works with Win2K Service Pack 3.
+	  This driver is compatible with old service packets. Requires driver to 
+	  updated (rad1394.sys)
+
+Sep 16 2002 JT
+	*  radTextDisplay: implemented xbox version.
+
+Sep 11 2002 TH
+	* XBox Controller - fix problem with disconnecting/connecting when
+	  when controller system was not getting serviced in a timely manner.
+
+Sep 4th 2002 JT
+    * radMemoryMonitor: radMemoryMonitorInitialize( ) default has refcount
+      information disabled, and it will speed things up by mins.
+
+------------------------------------------------------------------------------
+Version:    3.5
+Date:       August 6, 2002
+
+Software:   XBox:   July XDK (1.00.4721.1)
+            Win32:  VC++ 6.0
+            PS2:    V2.54
+            PS2 MW: CodeWarrior R2.7.1
+            GCN:    CodeWarrior R1.3.2
+------------------------------------------------------------------------------
+
+Aug 2nd 2002 JT
+    * radcore: added pre-compiled header into radcore xbox and win32 build.
+      It reduce the build time very significantly. Less than 1/2 of original
+      time.
+
+Aug 2nd 2002 JT
+    * radProfiler: design and implmented a simple timer based profiler system
+      based on a system used by game team in the past. See <radprofiler.hpp>
+      for more detail.
+
+    Functions/marco people should use are:
+
+    radProfilerInitialize( )
+    radProfilerTerminate( )
+
+    radProfilerBeginProfile( string )
+    radProfilerEndProfile( string )
+
+    radProfilerBeginFrame( )
+    radProfilerEndFrame( )
+
+    Note: there's an option in radProfilerInitialize( ) allow profile data
+          send to theWatcher. Profiled data is under Watcher namespace
+          "\\radProfiler".
+
+          to enable the profiler user must modify <radoptions.hpp> and enable
+          #define RADPROFILER
+
+July 20, 2002 TH
+	* Make radMemorySpaceCopy (platform independent DMA) system threadsafe.
+
+July 29, 2002 PGM
+	* Removed the old Ftech Heap. This contained code that was potentially in
+	  violation of GNU licensing requirements. This heap was not being used 
+	  by anyway.
+
+
+July 24, 2002 PGM
+	* Redesigned the Firewire system to put to use less IOP bandwidth. This 
+	  resulted in a new PS2BootCD and a new NT device driver (rad1394.sys).
+
+	Caution:  The device driver must be re-installed and your machince must
+   		   be restarted.
+		  The PS2 boot cd is built with 2.54 of the sony libs.
+
+July 24, 2002 TH
+
+	* Fixed crash dereferencing null platform pointer when testing if it had
+	  been initialized to display "Platform Not Initialized" assert.
+
+July 23, 2002 PS
+	* radDebug: the somewhat dubious `extern inline' construct is causing
+	  multiple definition errors in Pure 3D. The `extern' was removed, but
+	  *printf( ) will not compile out in Win32 or Xbox.
+
+July 16, 2002 TH
+
+	* RADPLATFORM_IOP_IMG_FILENAME to radoptions.hpp - this is the file name
+	  of the iop img file from the currently supported version of the sony
+	  libraries.
+
+July 12, 2002 JT
+	* DebugConsole: Interface change for IRadDebugConsolePointerInputCallback.
+	  Console have improved mouse event handle, including mouse button click,
+	  mouse button down, mouse botton up, and mouse movement.
+	  Summary of Interface change
+	  replaced OnClick() with OnButtonClick()
+	  added OnButtonDown()
+	  	    OnButtonUp()
+	  	    OnButtonMove()
+
+July 9, 2002 PGM
+    * Made changes to firewire implementation to allow user configuration of
+      time-outs, made the system more robust, and reduced memory consumption.
+
+July 5, 2002 JT
+    * theWatcher: it only pull watch points that are visible to the user.
+
+July 4, 2002 TH
+
+	* Fix external memory heap alignment problem, previously freeing valid
+	  aligned allocations could fail.
+
+July 2, 2002 RWS
+    * radfile: bug in gcn file ARAM cache (caused writing past end of buffer)
+
+June 28, 2002 RWS
+    * radmemory: new allocator, IRadMemoryTwoWayAllocator. see radmemory.hpp
+        - allocates from top down or from bottom up
+        - allocates location only once until Reset( ) is called
+
+June 24, 2002 PS
+	* radthread: added WaitForTermination( ) to wait until a thread has
+	  actually exited since it can't be done from the entry point.
+
+------------------------------------------------------------------------------
+Version:    3.4
+Date:       June 17, 2002
+
+Software:   XBox:   June XDK (1.00.4627.1)
+            Win32:  VC++ 6.0
+            PS2:    V2.43
+            PS2 MW: CodeWarrior R2.7.1
+            GCN:    CodeWarrior R1.3.2	
+------------------------------------------------------------------------------
+
+June 17, 2002 TH
+    * Fixed alignment problem with External memory heap
+
+June 17, 2002 JT
+	* MemoryMonitor: correct a error in calculating GameCube global heap memory.
+	  Note: there's no doucmentation on how to calculate heap/stack/code size.
+
+June 13, 2002 PS
+	* radfile: added non-optimal read warnings to PS2 host drive. These are
+	  the exact same messages as for the CD drive.
+
+June 12, 2002 PS
+	* radfile: minor change to the gcn memory card drive. Now properly handles
+	  corrupt cards.
+
+June 10, 2002 PS
+	* radfile: made the GCN memcard safer to use. All callbacks are now
+	  wrapped so that they won't be called in an interrupt. It should also
+	  work regardless of which SDK is used (not true previously). Xichi's
+	  changes are also included (bug #298), which are needed to pass
+	  Nintendo TRC.
+
+June 10, 2002 JT
+	* FileServer update to pass command line argument to PS2.
+	  To pass argument to PS2, add arguments at end of filename edit box in
+	  the FileServer.exe
+
+June 6, 2002 TH
+
+	* radfile: ps2 host drive - get rid of main thread stall when seeking
+	  before each read request.
+
+June 4, 2002 TH
+
+	* radfile: changed default granularity to infinity.  The file system will
+	  not chunk up file requests by default.  This will speed up file
+	  operations in many cases by decreasing the number of game loops per
+	  read.
+
+	* radfile: update logic so that file system completely unwinds its own
+	  interal servicing dependencies.  This resulted in fewer game-loops per
+	  operation.
+
+	* radfile: increase ps2 host drive transfer buffer to improve file system
+	  performance on large reads.  This improved sound streaming performance.
+
+June 4, 2002 PS
+	* radFile: added RADFILE_DEBUG_WARNINGS preprocessing directive.
+	  GCN DVD and PS2 CD drives will only report non-optimal warnings
+	  if this is defined.
+
+June 3, 2002 JT
+    * radDebugWatchServer.dll : interfaces now using __stdcall instead of
+      __cdecl calling convention. This allow VB application to call it
+      correctly. For Borland C++ builder user, when using implib.exe, you
+      nolonger have to provide any additional parameters.
+
+June 3, 2002 PS
+	* Asserts work properly in PS2MW
+
+May 31, 2002 PS
+	* Removed FileSocket code.
+
+May 30, 2002 PS
+	* PS2MW will give an #error if the *printf fns are compiled in release.
+	  The reason is that we don't have a way to compile them out yet.
+
+May 30, 2002 PS
+	* radFileOpenFromHandle( ) checks if a handle is valid.
+
+May 30, 2002 PS
+	* radRequestPoolTerminate( ) now sets s_RequestPool to NULL. Otherwise
+	  terminating then initializing the file system would assert.
+
+May 29, 2002 PS
+	* Fixed inline warnings in radCore. And made certain that *printf() actually
+	  compiles out of release builds.
+
+May 29, 2002 TH
+
+	* Added IRadTextDisplay::SetAutoSwap() and IRadTextDisplay::SwapBuffers( ).
+	  Previously the text display system was doing a v-sync every time
+	  you output a string.  Now you can now programatically chose when to
+	  update the screen using SetAutoSwap( true ) and manually calling
+	  SwapBuffers() in the application.
+
+May 25, 2002 JT
+    * radDebugConsoleServer: Right click on DebugConsoleServer window will
+      paste text from clipboard into DebugConsoleServer window by keyboard
+      input simulation.
+
+May 24, 2002 JT
+	* radoption: add define RADDEBUGCOMMUNICATION to define radDbgCom.
+	  In addition, added dependency check on RADDEBUGCOMMUNICATION as
+	  well.
+
+May 24, 2002 PS
+	* radController: PS2 controller no longer outputs a debug message if
+	  there's no controller at a specified location. This is taken care of
+	  in the API, so there's no need for it.
+
+May 24, 2002 PS
+	* radThread: thread local storage now has a default value of NULL. So
+	  if a user does a get before a set the results are well defined.
+
+May 24, 2002 JT
+	* radDebugConsole, previously, after console server is disconnected from 
+	  game, to connect back, user have to restart the game. With some logic
+	  changes, console client will restore the previous console window on
+	  the server.
+	  
+	* radDebugConsoleServer, size of the font is hard coded to 12 * 8 pixel
+	  for default window OEM font, now it caculate the font size and then
+	  do the offset.
+
+May 23, 2002 PS
+
+	* raddebug: unfixed long message crash for PS2 since vsnprintf is not
+	  included in the official release of SN. Should be fixed after we hear
+	  back from SN.
+
+May 23, 2002 PS
+
+	* raddebug: r*Msg( x, msg) now requires msg to be a string.
+
+May 23, 2002 PS
+
+	* raddebug: All assert/warning/valid/printf functions have been changed
+	  so that they won't crash if the message they print is too long. Instead,
+	  a long message will be truncated to size RAD_DEBUG_PRINT_MAX_LENGTH
+	  which is defined in raddebug.hpp. This is achieved by using non-ANSI
+	  functions vsnprintf( ) and snprintf( ). As a result, config.ps2 had to
+	  be changed (see radbuild: releasenotes). Also, the PS2 did not flush its
+	  output stream, so messages without newlines were not guaranteed to be 
+	  printed. This has also been fixed.
+
+May 23, 2002 TH
+
+	* Fix radcore thread entry proc signature so that our libraries compile
+	  and run with sony's 2.43 and 2.51 libraries.
+
+May 22, 2002 TH
+
+	* Made the memory space copy system and the ps2 host drive communicate
+	  through radPlatform so that there is never and outstanindg sceRead() or
+	  sceWrite() while a dma from EE to Iop or Iop to Ee is in progress.  This
+	  is a workaround for a sony library crash.
+
+May 21, 2002 PS
+    * radFile::ReadAsync( ) and radFile::WriteAsync( ) handle 0 byte arguments.
+
+May 17, 2002 JT
+    * Memory Monitor now has another way to identify object.
+      In console program, call radMemoryMonitorIssueFlag( "my flag" ); and
+      every object after that will have new ID or Flag name with "my flag".
+
+May 15, 2002 JT
+
+    * Fixed a bug in DebugWatcherClient, if DEBUGWATCH is NOT defined, string
+      will still exist in code. The Fix is to use a marco instead of current
+      inline function.
+      for example: instead of using radDbgWatchAddUnsignedInt( ... );
+      user should use radDbgWatchAddUnsignedInt_Macro( ( ... ) );
+      !!!Notice the double parens!!!
+
+    * Guaranteed data transmittion from watch client to watch server. However,
+      it will block the game from running temp if data is not completly transfered
+      over.
+
+    * All memory heap and pool now can be identified with a name when it is created
+      with factory creation function. Default name is to NULL.
+
+    * radMemoryMonitor now calling its own Service when DeclareAllocation/RescindAllocation
+      DeclareSection/RescindSection to ensure Service is called enough.
+
+May 13, 2002 JT
+
+    * radDebugWatchServerDll now uses sync data sending.
+
+May 10, 2002 PGM
+
+   * Rebuilt the PS2 CD Bootloader using 2.43 Sony libs. This include the Firewire
+     IRX	
+
+------------------------------------------------------------------------------
+Version:    3.3
+Date:       May 8, 2002
+------------------------------------------------------------------------------
+
+May 8, 2002 JT
+    * Add radMemoryMonitorIdentifyAllocation to all classes in radCore
+    * Fixed a bug in memory monitor where radDbgComService( ) will be called
+      recursivly after Tx buffer is full and there are data in Rx buffer
+
+May 8, 2002 PGM
+	
+    * Rewrote the GameCube HIO socket implementantion to increase the number of
+      channels and to improve the performance. This change supercedes changes
+      made earlier to fix these problems.				
+
+May 7, 2002 RWS
+
+    * Added support to gamecube file system to cache files in ARAM
+
+May 7, 2002 TH
+
+	* Added tail pointer to radLinkedClass<> now objects are added to the
+	  end of the list.  This is much better behavior and makes client clied
+	  easier in many cases.
+
+April 30, 2002 JT
+
+    * Added Debug Watch Server DLL into radCore. It provide all Watcher
+      functionalities for host PC outof a DLL. Interface for the DLL is defined
+      in radcore\tools\raddebugwatchserverdll\inc\radwatchserver.h and a sample
+      MFC program is under radcore\sample\debugwatcherdll
+
+April 26, 2002 TH
+
+	* Added ps2 memory space object allocations to the memory monitor.
+
+	* Fixed a where radMemoryBinAllocator::Validate() would assert() even
+	  though the heap was fine.
+
+April 26, 2002 JT
+    * Bug fixes in debugconsole where ps2 communication requires single
+      side hand shake.
+
+April 26, 2002 RWS
+
+    * Defined the xbox variables, which were previously not defined:
+        unsigned int radMemorySpace_OptimalMultiple = 2;
+        unsigned int radMemorySpace_OptimalAlignment = 2;
+
+April 25, 2002 PGM
+
+	* Fixed a problem in the Host I/O communication socket implementation to
+	  allow the client to control which allocator should be used for allocation.
+
+
+April 22, 2002 RWS
+    
+    * Created new radCrashHandler system
+    * Consists of 3 components: radCrashHandler, radCrashReportExtractor (ps2
+      & gcn only), and radCrashReportWriter
+    * Install in your program using radCrashHandlerInitialize( )
+    * Will handle crashes by gathering registers, stack, and other state info
+      and writing binary report to memory card
+    * Use radCrashReportExtractor to get crash report from the memory card to 
+      the host computer
+    * Use radCrashReportWriter to translate binary crash report into text file
+    * Note: memory card must be present.  (XBox @ controller 1, bottom slot;
+      Ps2 @ slot 1; Gcn @ slot A, which is the bottom slot on DDH's)
+
+
+April 19, 2002 TH
+
+	* Fix gnarly bug in file system where drive was being destroyed inside
+	  its own update loop.  This was not a problem if the application was
+	  holding the drive open which is the case in all shipping games.
+
+	* Add a bunch of missing objects (mostly file system objects) to the
+	  memory monitor display--we really, really, need a better way of insuring
+	  that we can't forget to add the allocation name!
+
+April 19, 2002 JT
+	* ***Interface Change***
+	  Added "bool SyncMode = false" in radMemoryMonitorInitialize( )
+	* Sync mode data transfer allow previous data be send before next
+	  data can be queued in the buffer.
+	* Fixed a bug in DLHeap.cpp where ResciendAllocation called twice in
+	  FreeMemoryAligned( )
+	* Fixed a bug in MemMonitor.exe where when an allocation reported is
+	  determined to be an invalid allocation, it will corrupt the memory
+	  image tree.
+
+April 17, 2002 TH
+	
+	* Put Extenal Memory Heap Nodes in a pool to avoid fragmentation.  You
+	  must now specify the maximum number of allocations when you create
+	  an ExternamMemoryHeap.
+
+	* added RADMEMORY_EXTERNAL_HEAP_TRACK_NAMES to radoptions.hpp.  This
+	  enables/disables storage of the allocation names in the external
+	  memory object.
+
+April 16, 2002 TH
+
+	* Aram allocations now use ftech's external heap.  Ftech now takes
+	  control of the user area of aram and no longer directs calls to
+	  ARAlloc().  ARAlloc() is a stack based allocator, not a heap and
+	  was causing problems in games when allocating and freeing from aram.
+
+	* Fix ps2 memory space copy system to allow copying of zero bytes.  This
+	  is more consistent with the local version ::memset().
+
+April 16, 2002 PGM
+	
+	* Fixed host side of debug communication system to deal with case
+          where the socket send would only send a partial amount of the requested
+	  send size.
+
+April 12, 2002
+
+	* Interface change in radDebugConsole, reintroduce
+	  radDebugConsoleService( ) to fix the problem of recusive
+	  radDbgComService( ) calls.
+	* Fix Iop to Iop transfer so that it uses a "static" fix-sized memory
+	  buffer and chunks up reads.  Previously it was allocationg a
+	  potentially huge chunk of Ee memory during steady state.
+
+	* Fix crash in raddrive where calling back on OnFileOperationsComplete
+	  could cause drive to be prematurely deleted.
+	  
+April 11, 2002 TH
+
+	* Fix Aram allocator so that it declares and rescinds memory monitor
+	  allocations.
+
+	* Fix Iop allocator so that it declares and rescinds allocations.
+
+	* Add Iop space to memory monitor tool.
+
+	* Add binallocator component.  This fixed-size bin allocator allows the
+	  game to specify the exact sizes of all bins.  It has pre and post
+	  padding fill checking, free-list consistency checks, works automatically
+	  with the memorymonitor and is extremely fast.  To enable debugging
+	  features, modify radconfig.hpp.
+
+	* move #define PROFILE to radconfig.hpp.  You must manually uncomment
+	  this line to enable file system performance monitoring.
+
+	* add #define DEBUGWATCH to radconfig.hpp.
+
+April 08, 2002 TH
+
+	* Optimize gcn memory space copy so that remote memory space copy
+	  requests run in a request pool and local requests just use one global
+	  placeholder object that always returns true when IsDone() is called.
+
+	* Add GetMemory( unsigned int size ) to IRadMemoryPool.  This function
+	  is more consistent with the heap interface and operator new's
+	  signature.  The function checks that the size is <= the pool's
+	  element size.
+
+April 05, 2002 TH
+
+	* AssertMsg( ) if using more than 2 megs of IOP memory.  (TOOLS have an
+	  extra six megs).
+
+	* Change gamecube radMemorySpace_OptimalAlignment from 4 to
+	  ARQ_DMA_ALIGNMENT (32).  gamecube documentation was wrong.
+	
+	* Optimize XBox/Win32 memory space copy so that no run-time memory
+	  allocations are done.  Because memory space scopy requests happen
+	  synchornously, we just return a single global object that always
+	  returns true when IsDone() is called.  
+
+	* Optimize Ps2 memory space copy so that memory space copy
+	  requests run in a request pool.
+
+	* Ps2 - Add definition of radMemorySpace_OptimalAlignment and
+	  radMemroySpace_OptimalMultiple.  They were previously not defined and
+	  were causing linking errors if used.
+
+April 04, 2002 TH
+
+	* Add radMemoryFindAllocator( ) && radMemoryFindAllocatorAligned( ).
+
+------------------------------------------------------------------------------
+Version:    3.2
+Date:       April 03, 2002 (FTech 3.2)
+------------------------------------------------------------------------------
+
+April 02, 2002 TH
+	
+	* Upgrade to April XDK.  Previous versions of the XDK are no longer
+	  supported due to required changes in the .dsp files.
+
+April 01, 2002 JT
+	* ---------Interface changes for debug console-----------
+	* Add OnVKey( ) to debug console to support all key stroke on the keyboard
+	* If client doesn't care about Virtual Key support, just implement the
+	  callback does nothing. For example void OnVkey( ... ) { }
+
+March 28, 2002 TH
+	
+	* Add warning assert to gamecube aram transfer that triggers if you
+	  release a copy request before it has finished copying.
+
+March 26, 2002 WN
+	
+	* Fixed GameCube Memory card to handle corrupted card.
+
+March 26, 2002 PGM
+	
+	* Changed the file system to allocate performance stop watches from 
+	  temporary memory.
+
+March 25, 2002 TH
+
+	* Added assert in file system to catch reading into radMemorySpace_Null.
+	* Added assert in file system to catch reading into a null pointer.
+
+March 21, 2002 WN
+
+	* Fixed GameCube Initializing Debug Com System problem(Tracker ID 233).  
+	  This change is specifically for GameCube platform.
+	  Modified raddebugcommunication.hpp, targethiosocket.cpp/hpp, targetx.cpp.
+	  This change only affects GameCube GBox and there is no impacts on GDev
+	  and DDH developement kits.  On GBox, When initializing Debug Com System,
+	  it is necessary to specify the HioChannel number to be 2.  
+	  Here is an example: 
+	  -radDbgComGameCubeInitInfo info;
+	  -info.m_HioChannel = 2;
+	  -radDbgComTargetInitialize( HostIO, radDbgComDefaultPort, &info );
+
+	  Please note that if you don't pass in a -radDbgComGameCubeInitInfo object, 
+	  the default channel will be 1 which works for GDev and DDH but not GBox.
+	  (changeList 3869 & 3880)
+
+
+March 19, 2002 WN
+
+	* Fixed GameCube MoviePlayer out of memory problem(Tracker ID 232).  
+	  Modified gcnmovieplayer.cpp/hpp and gcnmovieaudiobuffer.cpp.  
+	  -Added an assert to detect if out of memory after an allocation; 
+	  -Decrease the memory usage for decoded video frame;
+	  -Initialize sound streamer using milliseconds instead of number of
+	  -samples.
+	  (changeList 3863)      
+
+
+March 19, 2002 PGM
+
+	* Fixed PS2 implementation of timing services. Specifically, fixed
+	  problem with radTimeGetMicroseconds( ) occasionally reporting time going 
+	  backwards. Also radTimeGetMilliseconds( ) was reporting time to slow by
+	  1.7% of what it should have been. 
+
+
+March 19, 2002
+    * Memory Monitor update
+      1) lots of minor UI fixes
+      2) add section data export to text file in memory section overall view
+      3) add copy address of memory block into clip board in section memory
+         list view
+
+
+March 15, 2002
+
+	* Changed rAssert to use assert() on WIN32.  Using the standard assert()
+	  function fixes the problem of having recursive message box construction.
+
+------------------------------------------------------------------------------
+Version:    3.1
+Date:       March 13
+------------------------------------------------------------------------------
+
+March 13, 2002 JT
+
+    *
+    * MemoryMonitor has ***NOT*** yet tested with MetroWerks PS2 build yet,
+    * other build, XBox, PC, PS2(SN) and GCN are tested already.
+    *
+
+    * MemoryMonitor initial release with radCore/radSound/radMusic integration
+    * Add ::radMemoryMonitiorDeclare/RescindAllocation( )/radAddRef/radRelease
+      to the radCore
+    * There are two version of the MemMonitor?.exe, release build MemMonitorR.exe
+      and debug build MemMonitorD.exe, there are huge performance difference between
+      two build, approx 50% increase in release build.
+    * Add BCG (Business Components Gallery), MFC extension library into SDK
+      directory, 
+
+    Note:
+    1) MemoryMonitor PS2 build requires linker command file app.cmd to be
+       modified on SN build and MW build, and example of the linker command
+       file can be found under radcore\tools\MemMonitor\ps2linker
+    2) To enable to MemoryMonitor in the game, check out radoptions.hpp and
+       enable #define RADMEMORYMONITOR
+
+March 13, 2002 TH
+
+	* Added extern const char * radFileDebugChannel; to radfile.hpp.  Users of
+	  this system can now cal radDebugChannelEnable( radFileDebugChannel ) to
+	  print out filesystem request activity.
+
+	* Added radMemorySpace_Null to radMemorySpace enum.  It is usefull to
+	  have an undefined value for most types.
+
+March 13, 2002 RWS
+
+    * dlheap uses ints instead of longs
+
+March 8, 2002 TH
+
+	* Removed radPoolObject from radobject.hpp and moved it into sound, as
+	  sound was the only system using it.
+
+	* Added radMemorySpaceGetAllocator( ) function.
+
+	* Fixed radMemoryGetAllocator( ) so that it would return an interface to
+	  the system allocator ( malloc/OSHeapAlloc() ) if no allocator had been
+	  registered.
+
+	* Added ::radMemoryMonitiorDeclare/RescindAllocation( ) to the external
+	  memory heap.
+
+March 6, 2002 RWS
+
+    * Removed all long arithmatic from radTime, radStopwatch, radFileStats
+
+March 6, 2002 WNG
+    
+    * Fixed Track ID 209.  This is specific to GameCube.  Not enough memory is
+      allocated for the file read. (changelist 3774)
+
+
+March 4, 2002 RWS
+    
+    * On all platforms, controller system will not update controller values 
+      unless the controller is addref( )'ed by the client.  (Added this check 
+      to pc and ps2 controllers.  It was present in xbox and gcn) Mentioned 
+      this in interface file.
+
+
+March 4, 2002 TH
+
+    * changeed:
+
+        #define RADMEMORY_ALLOC_DEFAULT 0
+
+	  to
+
+		#define RADMEMORY_ALLOC_DEFAULT ((radMemoryAllocator)0)
+
+	  Now compiler will catch errors passing RADMEMORY_ALLOC_DEFAULT/TEMP for
+	  IRadMemoryAllocator* parameters.
+
+
+March 1, 2002 RWS
+
+    * Fixed all win32 samples, tools, and tests so that they build in all configs
+
+
+March 1, 2002 TH
+
+    * Fixed bug in ExternalMemory heap where allocating aligned memory was
+      causing 0 sized free blocks to be allocated and future allocations
+      would fail.
+
+February 27, 2002 RWS
+
+    * Changed win32 lib and samples to build with multithread c runtime library
+
+February 21, 2002 PGM
+
+    * Changed the allocation of memory for the Targat Host I/O socket inplementation
+      to be aligned to 32. This makes it work with the Doug Lee Heap.
+
+February 19, 2002 TH
+
+    * Added public: GetAllocatator( ) to radBaseObject.  Within a system of
+      internal objects it makes sense, and is optimal, to be able query
+      another object's allocator.
+
+    * Added code to break into the debugger if nested asserts are detected
+      while windows is displaying the previous assert's message box.
+
+February 14, 2002 TH
+
+    * Added operator new[] and operator delete[] with allocator parameter to
+      the smart pointer class.  I did NOT add the regualr (non-array)
+      new/delete because it would be silly rather silly to "new up" a single
+      smart pointer.
+
+February 6, 2002 PGM
+
+    * Fixed bug where the Win32 implementation of the platform object did
+      not restore the subclassed window procedure on termination.
+
+February 7, 2002 RWS
+
+    * Where required, added check for RAD_XXXXXX preprocessor definitions 
+      in library interface files
+      
+
+------------------------------------------------------------------------------
+Version:    3.01  
+Date:       February 1, 2002
+------------------------------------------------------------------------------
+        
+January 31, 2002 PGM
+
+    * Made a small change to the host firewire implementation as a result of 
+      initialization changes. No longer use radMemory on host.
+
+January 31, 2002 RWS
+
+    * Gamecube controller initial capture rate is now once every 16ms.  Clients
+          should not set this to a faster value.  A warning message will appear.
+
+January 31, 2002 RWS
+
+    * Implemented rDebugChannelPrintf and reimplemented other rXXXXXXPrintf's  
+          for GameCube
+
+January 31, 2002 WN
+
+    * Fixed Track ID 186(Callback called unconditionally: potential crash).  This is
+          Xbox specific. (changelist 3656)
+
+    * Implemented a mechanism in the GameCube socket layer to determine the channel
+          number used for initialization on the Target side.  This is a workaround for 
+          a bug in HIOEnumDevices() API.
+
+February 1, 2002 PGM
+    
+    * Disabled the GetMemoryObject member function from the radMemory Heap object.
+      This function needs to be re-written and was not in use anyway.
+                
+    * The radMemoryManager functions radMemoryGetCurrentAllocator( ) and
+      radMemorySetCurrentAllocator( ) now maintain the current allocator using
+      thread local storage. As a result, any one who uses these functions must 
+      ensure that the threading system is initailized prior to invoking the
+      funcion.
+
+    * Updated PS2 BootLoader Image with lastest release
+
+------------------------------------------------------------------------------
+Version:    3.00
+Date:       January 25, 2002
+------------------------------------------------------------------------------
+
+January 10, 2002 -Wilfred Ng
+
+DebugCommunication  
+
+    * Changed preprocessor directives for WIN32 and XBOX: From WIN32 to RAD_WIN32 and XBOX to RAD_XBOX.
+
+January 11, 2002 -TH
+    
+    * Fixed bug in Doug Lea heap where releasing heap wouldn't free memory
+      from malloc.
+
+    * Implement radMemoryGetCurrentAllocator( ) and radMemorySetCurrentAllocator( ).
+
+    * radMemoryRegisterAllocator( ) now takes a "parent" parameter.  The
+      FTech libraries now build up an allocator tree to speed up searching
+      on nested heaps.
+
+    * Added radMemoryInitialize( ) and radMemoryTerminate( ), you must now
+      call these functions in your game.  radMemoryInitialize() should be
+      called in the first new() call, and before the radPlatformInitialize().
+
+January 22, 2002 - PGM
+
+    * Created new subsystem to provide threading services. 
+
+    * Added placement new operator to radobect
+
+    * Change the old memory heap to use the new exclusion object
+
+    * Added sample code to illustrate new threading services
+
+January 24, 2002 - Wilfred Ng
+
+    * Aligned FTech preprocessor directives with Pure3D.  It is important to use the new directives in the 
+      makefile and Project Settings.  The changes are as follows:-
+
+       - PS2EE -> RAD_PS2
+       - GCN -> RAD_GAMECUBE
+       - WIN32 -> RAD_WIN32
+       - _XBOX -> RAD_XBOX
+       - RELEASE -> RAD_RELEASE
+       - TUNE -> RAD_TUNE
+       - DEBUG -> RAD_DEBUG
+    
+
+    * Enhanced the TargetEditor Application to support socket connection timeout.  The timeout value is stored
+          in Windows Registry. (ChangeList 3589)
+
+    * Added enhancement to the GameCube socket layer.  On the host side, the socket connection timeout can be
+          determined by SocketConnectionTimeout in Windows Registry.  This can be done thru the new TargetEditor
+          Application.  On the target side, enhancement has been done to detect if the program is being debugged.  
+          If it is, the connection timeout is ignored.
+
+    * Fixed TrackID 113 & 178.  Added rBreak() functionality and removed rValid() macros.
+
+January 25, 2002 - ROB
+
+    * Sample programs compile and run for ps2 metrowerks
+    * radobject implements new[] and delete[]
+
+January 25, 2002 -TH
+
+    * Modified radObject::DumpObjects( ) so that it doesn't require dynamically
+      allocated memory.  It is now safe to call radMemoryTerminate( ) and
+      radThreadTerminate( ) BEFORE radObject::DumpObjects( ) is called.
+
+    * Removed nested initialization calls from all libraries.  The reason
+      for this change was that many system's initialize calls take parameters.
+      If nested initialization is performed, the second call to a system's
+      initialize function is ignored, and thus are its parameters--this
+      creates ambiguous situation.  In other words, now the game has complete
+      control over every initialize call and its parameters.
+
+      The game must now initialize and terminate each system in exactly the
+      following order, where order doesn't matter the call appears on the same
+      line:
+
+          radThreadInitialize( ... )
+          radMemoryInitialize( ... )
+          radPlatformInitialize ( ... )
+          radTimeInitialize( ... )
+          radDbgComTargetInitialize( ... )
+          radFileInitialize ( ... ) / radControllerInitialize( ... )
+
+      And "tear down" in the following order:
+
+          radFileTerminate( ) / radControllerTerminate( )
+          radDbgComTargetTerminate( )
+          radTimeTerminate( )
+          radPlatformTerminate( )
+          radMemoryTerminate( )
+          radThreadTerminate( )
+
+    * Removed nested service calls from all libraries.  This allows the game
+      complete control over scheduling of the cooperative threading system
+      employed in our games.  It also avoids such problems as file system
+      callbacks being invoked from inside another system's Service( ) routine.
+
+      The one exception to this rule is during IRadFile::WaitForCompletion( )
+      which is forced to service the DebugCom system.  This is certainly a sign
+      that doing synchronous file I/O on the main thread is a problem.  In our
+      company's "game-loop" model "the game" is really the task scheduler, thus,
+      it is the game's responsibility to switch in cooperative service
+      tasks.  We should, and perhaps soon will, eliminate the WaitForCompletion()
+      calls from our libraries.
+
+    * Removed separate GameCube controller sample, it is now the same samle
+      as on all other platforms.
+
+------------------------------------------------------------------------------
+Version:    2.96
+Date:       January 10, 2002
+------------------------------------------------------------------------------
+
+December 17, 2001
+
+DebugCommunication
+
+    * Enhancement - Increased the number of Applications that the GameCube socket layer can 
+      support from 3 to 6.  Modified the HIO memory block layout: it contains 6 HIO Message 
+      Channels and 3 HIO Data Channels.  Each Application has its own dedicated HIO Message
+      Channel but shares the 3 HIO Data Channels with other Applications.  An equal priority 
+      round robin scheme is employed to govern which socket is next to send data.
+
+January 02, 2002
+
+DebugCommunication
+    * Enhancement - This is GameCube specific.  Added "Sequence Number" in the Hio Control 
+      Memory Block to indicate the order of data sent.  The game side needs to be updated 
+      and re-built before it can communicate to the tools using the latest Hio socket layer. 
+      (ChangeList 3472)
+
+January 03, 2002 -TH
+
+    * Added Ps2 Metrowerks Code Warrior library build.
+
+January 07,2002
+
+DebugCommunication
+
+    * Enhancement - This is GameCube specific.  Increase the performance for the GameCube 
+      Socket Layer.  To do so, increase the socket buffer size from 21K to 32K plus other 
+      logic to go with it.  Since the changes are in the underlying socket layer, ensure 
+      the corresponding Application tool (i.e. Watcher, DeBugConsole, FileServer) 
+      executables are used. (ChangeList 3492).
+
+    * Bug fix - This is GameCube specific.  Fixed a problem reported by the Mirth Team.  
+      After the game has crashed and powered cycle the GameCube, the Host side can't connect 
+      to the game until restarting the Host Applications. (ChangeList 3493)
+
+January 07, 2002 -TH
+
+    * Changed all char *'s to const char *'s in raddebug system.  The rad debug
+      system doesn't modify any of these parameters.
+
+January 09, 2002 -TH
+    
+    * Fixed logic problem in remote memory space where a spurious non-fatal
+      assert was being triggered in a number of functions due to flawed if else
+      constructs.
+
+------------------------------------------------------------------------------
+Version:    2.95
+Date:       November 26, 2001
+------------------------------------------------------------------------------
+
+November 6, 2001
+
+Memory
+
+    * Allow allocating a memory region that is exactly the size of the free space.
+      This means the only the required alignment padding is added to the
+      memory size.  (ch 3204)
+
+DebugCommunication 
+
+    * Made enhancements to the GameCube USB. Performance is now better by around 4x
+
+DebugOuput
+
+    * Fixed the rDebugInfoSetOutputHandler function and added the ability to set the
+      release output handler. (3254)
+
+Dispatcher
+
+    * Removed windows message queue servicing on WIN32 platform.  This was previously
+      causing windows applications to be re-entered in an unpredictable manner when
+      the file system was serviced.
+
+Stats
+
+    * Added two interfaces useful for collecting performance information: IRadStopwatch
+          and IRadSimpleStatistic. The stopwatch is a convenience for measuring time intervals,
+          and the simple statistic records numbers and provides the max, min, average, etc.
+
+        * Created a general statistics collection service intended to be used for generating
+          profiling data. radfile is partly plugged into it. It all compiles out in release.
+
+
+November 29, 2001
+
+Controller
+    
+    * Input Points no longer report initial values of 0.0f.  They report actual values.
+      (~0.5f for axes, etc.)
+
+December 3, 2001
+
+TextDisplay
+
+    * New component - allows printing of text on PS/2 and GCN video screen without needing
+          to link in Pure3D. This tool was needed to gather performance stats on consumer consoles.
+
+
+------------------------------------------------------------------------------
+Version:    2.9
+Date:       September 17, 2001
+------------------------------------------------------------------------------
+
+File System
+    
+    * Fixed problem with reading files whose size was a multiple of 32. In such cases, an extra
+      32 bytes would be read beyond the end of the file.
+
+        
+    * Game Cube DVD now cleanly handles errors as a result of the drive being openned.
+                  
+
+Stack Trace
+
+    * Added stack tracing functions for all platforms.  Call
+      radStackTrackGet( ) to fill an array with function pointers
+      which represent the current function call stack.
+
+
+September 21, 2001
+
+File System
+
+    * Gamecube memory card functionality has been updated for better safety testing.
+      (Warning: Never call CancelAsync on the memory card as it may break current mounting state)
+
+    INTERFACE CHANGE:
+    * I have addded MediaCorrupt to the list of possible error states.  (The GCN memory card
+      requires knowledge of the difference between not formatted and corrupt).
+
+Controller
+
+    * Gamecube controller calls PADCalibrate instead of PADReset (ch 3012)
+
+September 24, 2001
+
+File System
+
+    * Added retries to the low-level PS2 CD file read routine. Will retry in the advent of an unknown
+      error.
+
+Timer 
+
+    * Added an ExitHandler( ) function to the timer interrupt handler. Not sure why this was required
+      but the Sony TRC says we must use it.
+
+    * On the XBOX, added code to check for time going backwards. Will not return bad time if this occurs.
+      This change was made in response to bug reported with XBOX QueryPerformanceCounter function.
+
+October 4, 2001
+
+File System
+
+    * Made the XBOX file cache thread safe.  If the system is allocating memory at the same
+      time that the WIN32 IO thread allocates memory for the file cache transfer, unpredictable
+      things may occur (ch 3072).
+
+    * Added a debug file server interface. This is now used by the debug 
+          file server program and by p3dview. Any program that wants to serve 
+          files to a console can use this interface. See raddebugfileserver.hpp.
+
+October 10, 2001
+
+Weak Callbacks
+
+    * I've added a radWeakCallbackRegister and radWeakCallbackUnregister function to
+      <radobjectlist.hpp>.  These funtions make generating a callback and adding it
+      to a callback list very easy. (ch 3085)
+
+October 12, 2001
+    
+    * Added root directory relocation service to radfile. This allows 
+          entire games to be placed in subdirectories (as on a demo disk) 
+          without needing to change all the paths in the program and its cement 
+          files. See radFileSetRootDirectory( ) in radfile.hpp.
+
+October 15, 2001
+
+File Cementer
+
+    * I've changed the file cementer so that it makes use of an rcfEncoder library
+      for encoding the cement library.  This will make it easier to create
+      tools such as a windows based cementing tool.  The filecementer .exe will
+      not be moved to radcore/bin until its stability is verified.  (ch 3062)
+
+
+------------------------------------------------------------------------------
+Version:    2.8 
+Date:       September 17, 2001
+------------------------------------------------------------------------------
+
+File System
+
+    * Changed default alignment value to 2048 (0x800) to match PS2 CD
+      requirements.
+
+    * Added CACHING_ENABLED flag for XBOX caching.
+
+    * Fixed incorrect caching of files when a cement library data file has
+      also been cached. (ch 2778)
+
+    * Added a radFileOpenFromHandle command that allows creation of an IRadFile
+      from a (platform dependant) file handle.  The file's name and size must
+      be passed in aswell to make sure the radFile works correctly. (ch 2780)
+
+    * Allow a cement library that has a "file cache" (PS2 only) to make use
+      of this cache when cement files are opened.  Notice that if the cement
+      file also has a file cache, it will not be used. (ch 2799)
+
+
+    * Fixed memory leak in the cement library.
+
+    * Optimized loading of data into the cement library
+
+
+    * Do not alter cement libraries unless there is an actual update/add/remove
+      that occurs (ch 2807)
+
+    * Added support for Gamecube memory card (ch 2800), and a sample
+      program to show how to use it (ch 2814).
+
+    * The Gamecube memory card now supports banners and icons (ch 2829).  General
+      information must be set during the platform init function.
+
+    * Adding IOP Memory file caching for the PS2 (ch 2867).
+
+        
+    * GameCube had weird caching problem that was fixed by adding 32 to the internal data
+      pointer. Not sure why it fixes things but Eric Honch has assured us it works.
+
+
+    * XBOX file caching goes to Z:\radcach0R1G, not T:\radcache0RIG (ch 2909)
+    * Fixed possible crash in RemoveDrive due to XBOX file caching problems
+
+    * Adding special check to fix loading cement files from the file server when
+      the file server is set to target (ch 2915)
+
+    * Allowing the XBOX cache directory to change with radSetCacheDirectory
+      command (ch 2919)
+
+    * Breaking XBOX cache transfers into 1MB chunks, and offering radSetDefaultGranularity
+      function so that it may change (ch 2927)
+
+    * Using file date to verify its integrity.  The file date is set to match that
+      of the file on CD.  This date set is done after the file is finished copying
+      successfully (ch 2927)
+
+    * If a file no longer exists, do not load its cached version. (ch 2930)
+
+    
+Debug Communication 
+
+    * Added native FireWire support. Win32 host applications will required linking
+     to SetupAPI.lib (part of the Win32 libraries );
+
+    * Fixed problem with Game Cube Host I/O system. Requires patch 3 of the game cube
+      libaries
+
+    * Greatly improved through put in the FireWire by increasing internal packet sizes.
+
+    * Removed depencies on SNs TCPIP stack. No longer require linking to these libaries.
+
+    * Removed a very big static array used by the Firewire. Will only be created if firewire
+     is used.
+
+    * GameCube fixes to the host i/o to make it faster and more rubust.
+
+    * Changed code so this system is removed from a release build. Needed primariy for
+      XBOX since XNET libs cannot be distributed with a release game.
+
+
+Memory System
+
+    * radFreeMemoryAligned() now ignores NULL pointers.  This was previously causing
+      the scripting libraries to crash.
+
+    * Add radlinkedclass.hpp.  Derive from this template class to include prev & next
+      pointers and to automatically add new instances to the class list.
+
+File Server
+
+    * Added ability to log messages/transactions to a file
+
+
+Binary Tree
+
+    * Updating interface to support faster and more commong usage of tree traversals.
+    * GetFirst / GetNext traversal commands
+    * Removing AddObject without a key command
+    * Implementing balenced binary tree (ch 2864)   
+    
+FileSystem
+    * Adding special check to fix loading cement files from the file server when
+      the file server is set to target (ch 2915)
+    * Allowing the XBOX cache directory to change with radSetCacheDirectory
+      command (ch 2919)
+    * Breaking XBOX cache transfers into 1MB chunks, and offering radSetDefaultGranularity
+      function so that it may change (ch 2927)
+    * Using file date to verify its integrity.  The file date is set to match that
+      of the file on CD.  This date set is done after the file is finished copying
+      successfully (ch 2927)
+
+Build 
+    * Changed the build system so that the following conventions are employed.
+
+    Build Type      Defines             Symbols     Optimization
+
+    Debug                               Yes         No
+
+    Tune            NDEBUG              Yes         Yes
+
+    Release         NDEBUG, RELEASE     No          Yes
+
+Debug Communication
+            
+FileSystem
+    * Retain a copy of strings during async file requests (CreateDirectoryAsync,
+      DestroyDirectoryAsync, FindFirstAsync, DestroyFileAsync). (ch 2937)
+
+September 12, 2001
+
+FileSystem
+    * Fix problem on PS2 when caching a file from a cement library, but not caching
+      the cement library (ch 2967).
+
+FileCementer
+    * The filecementer tool no longer forces adding files to be case sensitive. (ch 2969)
+
+September 13, 2001
+
+FileSystem
+    * Using 128 byte alignment for IOP caching (ch 2970)
+
+September 17, 2001
+
+Debug Services
+
+    * Changed GameCube implementation of rAssert to generate a trap instruction instead
+      of entering an infinite loop. 
+
+    * Added rDebugPrintf() and rReleasePrintf.  Similar to rDebugString and
+      rReleaseString, but performs printf/vararg style formatting.
+
+
+Object List
+
+    * Add radObjectDynamicArray component.  This is an array that grows in fixed size
+      pages without reallocing.
+
+    * Add radObjectListInitialize() was added.  This must be called by the game, it was
+      added as an attempt to minimize memory overhead and fragmentation.  "weak wrapper"
+      objects will be allocated from their own pools.  These pools will grow if they
+      overflow.
+
+    * Each radObjectList now can allocate nodes form the heap (default) or maintain
+      its own node-pool.  Calling Initialize( poolGrowSize ) will cause the nodes to
+      be allocated in pools.
+
+Memory
+
+    * Added the "Doug Lea" heap.  Doug Lea wrote the most modern gcc/unix
+      heap.  This heap was used by Simpsons to solve game cube memory
+      overahead problems, and is now available on all platforms.
+
+    * Cleaned up memory interface to reduce virtual function call overhead.
+      You can now "plug" a heap directly into an allocator slot in the memory
+      manager.
+
+    * Removed the radMemoryHeapAllocator class.  IRadMemoryHeap now derives
+      from IRadMemoryAllocator.
+
+    * IRadMemoryAllocator::FreeMemoryAligned( ) was added for consitency
+      with the radMemory... C functions.
+
+    * radGetMemoryUnCached() has been removed, but will probably return soon
+      and actually work.
+
+    * IRadMemoryHeap::GetMemoryUnCached( ) has been removed.
+
+    * IRadMemoryHeap::AddOutOfMemoryCallback( ) has been removed in an attempt to
+      avoid polluting the low level heap interface.
+
+    * Concept of first/last/best fit was removed from the IRadMemoryHeapInterfaces.
+      This was to avoid exposing a heap-specific implementation detail in the
+      base interface.  None of our heaps currently support this feature.
+
+    * Concepts of debug levels have been removed from the low-level heap
+      interface--different heaps have different debug features.
+
+September 21, 2001
+
+Memory
+
+    * Added radMemorySetOutOfMemoryCallback( ) to trap failures of
+      radMemoryAlloc( ) and radMemoryAllocAligned calls.
+
+    * removed radObjectListInitialize( ).
+
+------------------------------------------------------------------------------
+Version:    2.5
+Date:       Jun 18, 2001
+------------------------------------------------------------------------------
+
+*   Updated the debug communication layer to work with Microsofts new Network stack
+
+------------------------------------------------------------------------------
+Version:    2.4
+Date:       Jun 18, 2001
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+Version:    2.3 
+Date:       Jun 18, 2001
+------------------------------------------------------------------------------
+
+All systems
+    * Fixed problem with creating threads/rotating threads on the PS2. With
+          the release of Sony libs 2.1 or greater initial thread priority was set
+          to one. This cause a problem primarily with the CD. This has been resolved.
+
+------------------------------------------------------------------------------
+Version:    2.2 
+Date:       Jun 18, 2001
+------------------------------------------------------------------------------
+
+All systems
+
+    * Added support for the GameCube including host communication and tools. 
+
+Platform
+
+    * Added services to perform endian conversion
+
+File System
+    
+    * Added file cementer tool for combining small files into a large file.
+    * Changed the hash collision algorithm.
+
+------------------------------------------------------------------------------
+Version:    2.1
+Date:       May 22, 2001
+------------------------------------------------------------------------------
+    
+FileSystem
+
+    * DVD Support added
+    * Performance enhancements
+    * Tracks number of open files on PS2 and asserts if limit exceeded.
+    * Added PS2 Memory Card Support
+
+Platform
+
+    * Fixed problem with loading the IOP boot image.
+            
+Proview Support
+    
+    * Added support to use the Proview FireWire Communication. This requires
+     an additional library that applications must link to. The lib is called
+     SNTTY.LIB and is located under the SDKS SNTCPIP directory.
+
+------------------------------------------------------------------------------
+Version:    2.0
+Date:       Apr 11, 2001
+------------------------------------------------------------------------------
+
+This is the first release of RadCore. RadCore is a replacement library for the
+functionality provided by the two old Foundation Technologies libaries, RFC and 
+RadFTech. Most of the functionality is the same. The primary difference is the 
+packaging of this functionality and clearer, easier to use interfaces. Important
+differences include:
+
+        
+    * Sound has been moved into a seperate library RadSound.
+    
+    * Scripting and FCOM object factories have been moved to RadScipt
+
+    * RFC and RadFTech have been replaced with RadCore.
+
+    * RadCore does not use FCOM. Each subsystem provides directly linkable initialization
+      and object constuction functions. 
+
+    * No coupling through the dispatcher exists. If a component requires peridioc 
+      execution time, it exposes a service routine which must be invoked by the game.

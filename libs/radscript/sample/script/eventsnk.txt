@@ -1,0 +1,4 @@
+with scrTstClass1 named TestObject2
+{
+    SetShortString ( "Event happened!!! Yea." )
+}

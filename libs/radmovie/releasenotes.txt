@@ -1,0 +1,479 @@
+==============================================================================
+RadMovie - Release Notes:
+==============================================================================
+
+------------------------------------------------------------------------------
+Version: 
+Date:    Pending
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+Version: 10-12-2002
+Date:    December 10, 2002
+------------------------------------------------------------------------------
+
+December 9, 2002 PS
+   * For Bink movies, if the width of the movie is different from the width of
+     the screen, the movie is stretched and bilinearly interpolated.
+
+------------------------------------------------------------------------------
+Version: 26-11-2002
+Date:    November 26, 2002
+------------------------------------------------------------------------------
+
+November 24, 2002 RWS
+	* Changed bink movie player default volume from 0.0 to 1.0
+
+------------------------------------------------------------------------------
+Version: 12-11-2002
+Date:    November 12, 2002
+------------------------------------------------------------------------------
+
+November 4, 2002 RWS
+
+    * Current movie player implementations:
+
+        XBOX: - bink
+              - xmv
+
+        PC:   - bink
+
+        GCN:  - bink
+              - hvqm4
+
+        PS2:  - ipu
+
+    * The PC movie player now fits the radmovie2 interface
+
+    * Created the binkmovieplayer which is common across gcn, xbox, and pc
+
+    * Eliminated large buffer allocation from bink movie player (1.17MB for
+      640x480 movie)
+
+    * Note: You need to define RAD_MOVIEPLAYER_USE_BINK in radoptions.hpp to 
+      use bink.  
+
+    * If you'd like to use the old platform dependent radmovie (hvqm4, xmv)
+      RAD_MOVIEPLAYER_USE_BINK must not be defined
+
+    * Fixed dvd read alignment issues on gamecube hvqm4 movie player
+
+	* Added Bink libraries for pc and gcn (sdks/win32/bink/ and 
+      sdks/gamecube/bink)
+
+------------------------------------------------------------------------------
+Version: 15-10-2002
+Date:    October 15, 2002
+------------------------------------------------------------------------------
+
+October 15, 2002 PS
+
+    * Fixed builds and sample to work with radcontent
+
+Octber 15, 2002 RWS
+
+    * bink movie player goes to nodata state when a file isn't found
+
+
+Octber 11, 2002 RWS
+
+    * Fixed problem in xmv movie player where first frames of movie could
+      be invalid
+
+    * Added sanity check assert to ensure that this doesn't happen in ps2
+      or gamecube
+
+------------------------------------------------------------------------------
+Version: 4.3 (FTech 3.7)
+Date:    October 1, 2002
+------------------------------------------------------------------------------
+
+October 1, 2002 RWS
+
+    * Fixed audio alignment problem in rmvmaker
+
+October 1, 2002 RWS
+
+    * Changed gamecube videodecoder assert from                
+
+        unsigned int size = HVQM4BuffSize( & m_HVQM4SeqObj );
+        rTuneAssert( size ==  m_DecoderWorkBufferSize );
+
+      to
+        
+        unsigned int size = HVQM4BuffSize( & m_HVQM4SeqObj );
+        rTuneAssert( size <=  m_DecoderWorkBufferSize );
+
+      This handles requirements of movies that have been pieced together.
+
+September 27, 2002 RWS
+
+    * XBox project generates radmoviext.lib instead of radmoviexr.lib
+
+September 19, 2002 RWS
+    
+    * Fixed memory leak in binkrenderstrategybink.cpp
+
+------------------------------------------------------------------------------
+Version: 4.2 (Ftech 3.6 )
+Date:    September 17, 2002
+------------------------------------------------------------------------------
+
+September 17, 2002 RWS
+
+    * Fixed memory leak in ps2renderstrategy.cpp
+
+September 5, 2002 RWS
+
+    * Fixed memory leak in renderstrategyps2.cpp
+    * Allowed binkrenderstrategy to letterbox short movies
+
+August 26, 2002 RWS
+
+    * Cleaned out some of the libs that were still checked in from the old
+      movie player (rMvTxtur, radmovie/lib/binkxbox.lib)
+
+    * Got rid of warning from sample and test about 'radmovie/util' directory 
+      not found (gcn only)
+
+August 22, 2002 RWS
+
+    NEW IMPLEMENTATION: Bink movie player support for xbox
+
+        Implemented a Bink movie player for xbox.  To use Bink instead of the
+        XMV implementation define RAD_MOVIEPLAYER_USE_BINK in radoptions.hpp
+
+        Support of Bink will eventually end.  Microsoft's XMV video quality is
+        too low at this time to be used in games that are nearing completion.
+        The quality will improve, and so XMV will be used in upcoming games.
+
+        This required adding  Bink libraries and headers to the sdks/xbox/bink
+        directory.  This will need to be maintained and updated.
+        
+        The current version in the BINK.H header is 1.5e, 2002-04-29 
+
+    CHANGED INTERFACE:  IRadMoviePlayer2
+
+        Changed the return value of IRadMoviePlayer2::GetFrameRate from
+        unsigned int to float.
+
+    CHANGED INTERFACE:  IRadMoviePlayer2::VideoFrameInfo
+
+        Removed format field.  This field was of no value, nobody used it, and
+        I didn't want to carry it along any further.
+        
+------------------------------------------------------------------------------
+Version: 4.1 
+Date:    August 6, 2002 (FTech 3.5)
+------------------------------------------------------------------------------
+
+August 2, 2002 RWS
+
+    * Added documentation for rmvmaker
+    * rmvmaker supports ps2, xbox, gcn
+    * cleaned up a few bugs and interfaces
+    * rmvmaker creates movie files that contain a number of different audio
+      mixes.  One audio mix can be selected at runtime to be played back 
+      with the video
+
+July 24, 2002 RWS
+        
+    NEW IMPLEMENTATIONS: XBox and Gamecube
+
+    CHANGED INTERFACE: IRadMoviePlayer
+    NEW INTERFACES:    IRadMovieRenderStrategy & IRadMovieRenderLoop
+
+    Things have changed a little since the previous, preliminary, ps2 only
+    release of the new radmovie2.
+
+    RadMoviePlayer2 has undergone its second revision.  IRadMovieRenderStrategy 
+    and IRadMovieRenderLoop have been introduced.
+
+    IRadMovieRenderStrategy:
+        
+        Clients initialize the movie player class with a render
+        strategy object.  The render strategy object will then be responsible
+        for rendering movie frames.
+
+        The idea is that if clients want to render fullscreen movies, they
+        provide the movie player with some kind of a full screen render strategy
+        object.  If they want to render texture movies, they provide the movie
+        player with some kind of a texture render strategy.
+
+        Clients can write there own render strategies by implementing the 
+        IRadMovieRenderStrategy.
+
+        At this time, radmovie contains a full screen render strategy for the
+        gamecube, xbox, and ps2.
+
+        In the future, these render strategies may go elsewhere (like pure3d,
+        etc.)
+
+    IRadMovieRenderLoop:
+
+        Clients intialize the movie player class with a render loop object.  The
+        render loop object is responsible for managing the render loop of a movie.
+        
+        When asked to do so by the movie player, the render loop object begins
+        the render of the frame, initiates the movie render, performs any game
+        specific rendering (subtitles, etc.), and ends the render of the frame.
+
+        Initializing the movie player with a render loop object is optional.  The
+        idea is that this will allow texture rendering to be supported (e.g. rendering
+        to a jumbotron in a sport game).
+
+        For fullscreen rendering, clients MUST IMPLEMENT IRadMovieRenderLoop themselves
+        and MUST INITIALIZE the movie player with there implementation.
+
+    IRadMoviePlayer2:
+
+        The IRadMoviePlayer interface was changed to include the render loop and
+        the render strategy interfaces.  
+
+        * Methods that have disappeared: 
+            LockVideoBuffer( ), 
+            UnlockVideoBuffer( )
+        * New methods: 
+            GetCurrentFrameNumber( )
+        * Modified methods: 
+            Initialize( )
+
+    To play a movie:
+
+        Clients must initialize movie player as described above.  They call Play( ) They 
+        then service FTech modules in as tight a while loop as possible, monitoring
+        the state of the movie player, and perhaps the state of the IRadController
+        input points.
+
+        As litte computation as possible should be happening while the movie is playing.
+        The movie player requires lots of cpu and lots of cd bandwith.  Problems 
+        will start happening if radmovie, radsound, and radfile are not getting
+        serviced many times a frame.  Problems will also start happening if other
+        files are being streamed from the cd while the movie is playing.
+
+   
+July 15, 2002 RWS 
+
+    Upgraded gamecube HVQM4 libs and headers (see sdks/Gamecube/HVQM* directories)
+    to version 1.50_011225
+
+June 28, 2002 RWS
+
+    Ps2 movie player improvements:
+
+    * INTERFACE CHANGED: IRadMoviePlayer
+      Load( ) now includes specifier for index of audio track to play.  Audio
+      is now longer specified in a seperate filel
+
+    * TOOL CHANGED: rmvmaker.exe
+      Now handles video and multiple audio tracks and puts them together
+      in one file
+
+    * Added multi-track audio support to .rmv file and movie player.
+      Movies can now contain different audio tracks.  Clients choose
+      which audio track should be played at run time. (e.g. playback
+      english audio track or spanish audio track.)
+
+    * Now runs from cd in all configurations
+
+    * Packetized encoded video buffer so that it consists of small 
+      allocations of memory
+
+    * Improved preloading logic
+
+    * Smoothed out video playback rate
+
+------------------------------------------------------------------------------
+Version: 4.0
+Date:    June 17, 2002 (FTech 3.4)
+------------------------------------------------------------------------------
+
+April 15, 2002 RWS
+
+    * <! NEW RADMOVIE PS2 IMPLENTATION !>
+
+    * The new radMovie interface is currently located in radmovie/inc/radmovie2.hpp
+
+    * Using the interfaces defined in radmovie.hpp will still let you use the old
+      movie player.  
+      
+    * For this release of FTech, if you want to use the new movie
+      player, you will have to include radmovie2.hpp and call radMovieService2( ).
+      The names of these files and functions will change.
+
+    * Only the ps2 implementatino of the new interface is included in this 
+      release of FTech.  The other platforms will be supported soon
+
+    * The new implementation consists of these files:
+            /radmovie/inc/radmovie2.hpp
+            /radmovie/src/common/*.*
+            /radmovie/src/ps2/*.*
+            /radmovie/util/movieutilps2.*
+            /radmovie/tools/rmvmaker/*.*
+
+    * This new implementation is different from previous implementations in that
+      the movie player now only handles video decoding and audio synchronization.
+      Audio playback is handled internal to the movie player using radsound.  
+      Rendering of video occurs externally to the movieplayer using pure3D (for
+      this first revision, rendering is handled by the class declared in the file
+      radmovie/util/movieutilps2.hpp
+
+    * The sample program under /radmovie/sample/new_interface/ illustrates how
+      you should use the new interface
+
+    * FILE CREATION: For this revision, the movie player handles video and 
+      audio independently in seperate files (radsound .rsd audio files and
+      radmovie .rmv video files)
+
+        1) Start with an uncompressed .avi file
+
+        2) Seperate audio into a .wav file (e.g. using Adobe Premiere)
+        3) Use radsound/tools/bin/wavtorsd.exe to convert the .wav file
+           into an .rsd file
+
+        4) Convert the .avi into a video only .m2v mpeg2 file (e.g.
+           using LSX-MPEG Encoder).  This step has some important requirements:
+                - Bitrate < 6000Kbit/s  (the ps2 cd has a throughput of about 1Meg/s)
+                - Frame sequence of I-Frames only (no P or B frames)
+        5) Convert the .m2v file to an .ipu file using 
+           /usr/local/sce/tools/ps2str/win32/ps2strw.exe
+        6) Convert the .ipu file to an .rmv file using 
+           /radmovie/tools/bin/rmvmaker.exe
+
+        7) The radmovie player loads the .rsd file from step 2 and the .rmv file
+           from step 6
+
+------------------------------------------------------------------------------
+Version: 3.3
+Date:    May 8, 2002 (FTech 3.3) 
+------------------------------------------------------------------------------
+
+April 18, 2002
+	
+	- Fixed the XBox movie player so that it only comes out of the front
+	  left and front right speakers.  It is not generally desirable to
+	  hear the audio out of every speaker unless it is explicitly encoded
+	  using multi-channel surround sound format.
+
+Apr 17, 2002 PGM
+
+	* Reverted changes made to fix the stop movie problem on the PS2. Fixed
+          it correctly and also fixed up the sample.
+
+
+Apr 12, 2002 PGM
+
+	* Fixed a memory leak with the m_pIRadSoundHalAudioFormat not being
+          released
+
+
+
+------------------------------------------------------------------------------
+Version: 3.2
+Date:    April 03, 2002 (FTech 3.2)
+------------------------------------------------------------------------------
+
+April 02, 2002 TH
+	
+	* Upgrade to April XDK.  Previous versions of the XDK are no longer
+	  supported due to required changes in the .dsp files.
+
+------------------------------------------------------------------------------
+Version: 3.1 - Released 
+Date:    March 13, 2002 (FTech 3.1)
+------------------------------------------------------------------------------
+
+February 27, 2002 RWS
+
+    * Changed win32 lib and samples to build with multithreaded c runtime library
+
+February 11, 2002 WN
+    * Make changes to XBOX movieplayer so that it is compatible with Pure3D V16.
+      XBOX movieplayer uses Pure3D to render, so it is necessary to have PUre3D
+      installed.
+
+February 7, 2002 RWS
+
+    * Where required, added check for RAD_XXXXXX preprocessor definitions 
+      in library interface files
+
+------------------------------------------------------------------------------
+Version:	3.0
+Date:		January 30, 2002
+------------------------------------------------------------------------------
+
+GameCube 
+
+	18-jan-2002 
+	
+	* fixed gcnmovieaudiobuffer to properly call back from GetFramesAsync 
+          when its soundbuffer is null
+
+
+PS2
+
+
+PS2MW
+
+
+XBOX
+
+
+General
+
+        24-jan-2002 
+	* Aligned FTech preprocessor directives with Pure3D.  It is important to use the new directives in the 
+	  makefile and Project Settings.  The changes are as follows:-
+
+	   - PS2EE -> RAD_PS2
+	   - GCN -> RAD_GAMECUBE
+	   - WIN32 -> RAD_WIN32
+	   - _XBOX -> RAD_XBOX
+	   - RELEASE -> RAD_RELEASE
+	   - TUNE -> RAD_TUNE
+	   - DEBUG -> RAD_DEBUG
+
+------------------------------------------------------------------------------
+Version:	2.9
+Date:		
+------------------------------------------------------------------------------
+
+GameCube 
+
+	* Added code to deal with restarting movie player after pause occurred. The code 
+	  now ensures enough data is buffered prior to restarting the audio streamer, thus
+	  preventing skipping.
+
+	* Fixed problem with pausing and resuming a movie rapidly. 
+
+	* Added wait for Vsync to prevent tearing
+
+PS2
+	* Made numberous changes to keep audio synchronized with the video.
+
+	* Added PAL support (including the sample player)
+
+	* Removed automattic audio reset.  If an audio reset is desired,
+	  call pMoviePlayer->SetAudioReset(true).  (ch 3128)
+
+PS2MW
+
+	* Added Ps2 Metrowerks Code Warrior library build.
+
+XBOX
+	* Made changes to incorporate the new (November) Bink API changes.  By default, the
+	  new Bink is used.  Define _OLDBINK in preprocessor only if using the old Bink APIs;
+	  also, ensure you revert to the Old binkxbox.lib, BINK.h, RAD.h and rad3d.h.  The 
+	  preprocessor option is to ease the transition and will be eventually removed.
+	  The changelist is 3347.
+
+
+------------------------------------------------------------------------------
+Version:	2.8
+Date:		September 21, 2001
+------------------------------------------------------------------------------
+
+GameCube
+	
+	* Initial verion of the Game Cube Movie Player released.
+

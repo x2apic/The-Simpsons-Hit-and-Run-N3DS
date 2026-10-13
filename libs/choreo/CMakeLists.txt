@@ -1,0 +1,44 @@
+set(CHOREO_SOURCES
+	"src/animation.cpp"
+	"src/bank.cpp"
+	"src/basebank.cpp"
+	"src/blend.cpp"
+	"src/blendtemplate.cpp"
+	"src/constants.cpp"
+	"src/driver.cpp"
+	"src/engine.cpp"
+	"src/footblenddriver.cpp"
+	"src/footblender.cpp"
+	"src/foot.cpp"
+	"src/footplanter.cpp"
+	"src/internalanimation.cpp"
+	"src/jointblenddriver.cpp"
+	"src/jointblender.cpp"
+	"src/load.cpp"
+	"src/locomotion.cpp"
+	"src/partition.cpp"
+	"src/puppet.cpp"
+	"src/replayblenddriver.cpp"
+	"src/replayblender.cpp"
+	"src/replay.cpp"
+	"src/rig.cpp"
+	"src/rootblenddriver.cpp"
+	"src/rootblender.cpp"
+	"src/root.cpp"
+	"src/scriptreader.cpp"
+	"src/scriptwriter.cpp"
+	"src/synchronization.cpp"
+	"src/transition.cpp"
+	"src/utility.cpp"
+)
+
+add_library(choreo STATIC ${CHOREO_SOURCES})
+target_include_directories(choreo
+	PUBLIC "inc/"
+)
+target_link_libraries(choreo
+	p3d
+	poser
+	radcore
+	sim
+)
